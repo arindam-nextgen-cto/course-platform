@@ -1,0 +1,262 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  STUDENT
+  INSTRUCTOR
+  ADMIN
+}
+
+enum EnrollmentStatus {
+  ENROLLED
+  CANCELLED
+  COMPLETED
+}
+
+enum LessonProgressStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+}
+
+enum CohortStatus {
+  DRAFT
+  OPEN
+  UPCOMING
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+enum TransactionStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  avatar    String?
+  bio       String?
+  role      UserRole @default(STUDENT)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  enrollments     Enrollment[]
+  lessonProgress  LessonProgress[]
+  comments        Comment[]
+  transactions    Transaction[]
+  coursesCreated  Course[]
+  cohortsCreated  Cohort[]
+
+  @@map("users")
+}
+
+model Course {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  description String?
+  image       String?
+  level       String?
+  category    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  createdById String
+
+  // Relations
+  createdBy User      @relation(fields: [createdById], references: [id])
+  cohorts   Cohort[]
+  sections  Section[]
+
+  @@map("courses")
+}
+
+model Cohort {
+  id                   String        @id @default(cuid())
+  courseId             String
+  name                 String
+  startDate            DateTime?
+  endDate              DateTime?
+  capacity             Int?
+  status               CohortStatus  @default(DRAFT)
+  price                Decimal?      @db.Decimal(10, 2)
+  registrationDeadline DateTime?
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+  createdById          String
+
+  // Relations
+  course        Course         @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  createdBy     User           @relation(fields: [createdById], references: [id])
+  enrollments   Enrollment[]
+  liveSessions  LiveSession[]
+  announcements Announcement[]
+  transactions  Transaction[]
+
+  @@map("cohorts")
+}
+
+model Section {
+  id         String   @id @default(cuid())
+  courseId   String
+  title      String
+  orderIndex Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // Relations
+  course  Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  lessons Lesson[]
+
+  @@map("sections")
+}
+
+model Lesson {
+  id          String   @id @default(cuid())
+  sectionId   String
+  title       String
+  description String?
+  videoUrl    String?
+  content     String?  // Markdown/HTML content
+  orderIndex  Int
+  published   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  section        Section          @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  lessonProgress LessonProgress[]
+  comments       Comment[]
+
+  @@map("lessons")
+}
+
+model Enrollment {
+  id          String           @id @default(cuid())
+  userId      String
+  cohortId    String
+  status      EnrollmentStatus @default(ENROLLED)
+  enrolledAt  DateTime         @default(now())
+  completedAt DateTime?
+
+  // Relations
+  user   User   @relation(fields: [userId], references: [id])
+  cohort Cohort @relation(fields: [cohortId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, cohortId])
+  @@map("enrollments")
+}
+
+model LessonProgress {
+  id          String                @id @default(cuid())
+  userId      String
+  lessonId    String
+  status      LessonProgressStatus  @default(NOT_STARTED)
+  completedAt DateTime?
+  createdAt   DateTime              @default(now())
+  updatedAt   DateTime              @updatedAt
+
+  // Relations
+  user   User   @relation(fields: [userId], references: [id])
+  lesson Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, lessonId])
+  @@map("lesson_progress")
+}
+
+model LiveSession {
+  id           String    @id @default(cuid())
+  cohortId     String
+  title        String
+  description  String?
+  startTime    DateTime
+  endTime      DateTime
+  embedUrl     String?   // YouTube Live, Zoom, etc.
+  recordingUrl String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  // Relations
+  cohort Cohort @relation(fields: [cohortId], references: [id], onDelete: Cascade)
+
+  @@map("live_sessions")
+}
+
+model Comment {
+  id              String    @id @default(cuid())
+  userId          String
+  lessonId        String
+  parentCommentId String?
+  content         String
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Relations
+  user          User      @relation(fields: [userId], references: [id])
+  lesson        Lesson    @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  parentComment Comment?  @relation("CommentReplies", fields: [parentCommentId], references: [id])
+  replies       Comment[] @relation("CommentReplies")
+
+  @@map("comments")
+}
+
+model Announcement {
+  id        String   @id @default(cuid())
+  cohortId  String
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  cohort Cohort @relation(fields: [cohortId], references: [id], onDelete: Cascade)
+
+  @@map("announcements")
+}
+
+model Transaction {
+  id               String            @id @default(cuid())
+  userId           String
+  cohortId         String
+  amount           Decimal           @db.Decimal(10, 2)
+  currency         String            @default("USD")
+  status           TransactionStatus @default(PENDING)
+  paymentGatewayId String?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  // Relations
+  user   User   @relation(fields: [userId], references: [id])
+  cohort Cohort @relation(fields: [cohortId], references: [id])
+
+  @@map("transactions")
+}
+
+model Coupon {
+  id           String    @id @default(cuid())
+  code         String    @unique
+  discountType String    // "percentage" or "fixed"
+  amount       Decimal   @db.Decimal(10, 2)
+  validFrom    DateTime
+  validTo      DateTime
+  usageLimit   Int?
+  usedCount    Int       @default(0)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@map("coupons")
+}
