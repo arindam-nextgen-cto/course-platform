@@ -1,11 +1,14 @@
-import { createServerSupabaseClient } from '@/lib/supabase'
+import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { prisma } from '@/lib/prisma'
 import { redirect } from 'next/navigation'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import { UserWithEnrollments } from '@/lib/types'
 
-async function getUserData(userId: string) {
+export const dynamic = 'force-dynamic'
+
+async function getUserData(userId: string): Promise<any> {
   return await prisma.user.findUnique({
     where: { id: userId },
     include: {
@@ -66,13 +69,13 @@ export default async function DashboardPage() {
     redirect('/auth/signin')
   }
 
-  const upcomingSessions = userData.enrollments.flatMap(enrollment => 
-    enrollment.cohort.liveSessions.map(session => ({
+  const upcomingSessions = userData.enrollments.flatMap((enrollment: any) => 
+    enrollment.cohort.liveSessions.map((session: any) => ({
       ...session,
       cohortName: enrollment.cohort.name,
       courseName: enrollment.cohort.course.title
     }))
-  ).sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime())
+  ).sort((a: any, b: any) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime())
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -122,7 +125,7 @@ export default async function DashboardPage() {
                   </div>
                 ) : (
                   <div className="space-y-4">
-                    {userData.enrollments.map((enrollment) => (
+                    {userData.enrollments.map((enrollment: any) => (
                       <div key={enrollment.id} className="border rounded-lg p-4">
                         <div className="flex justify-between items-start">
                           <div>
@@ -163,7 +166,7 @@ export default async function DashboardPage() {
                   </p>
                 ) : (
                   <div className="space-y-3">
-                    {userData.lessonProgress.slice(0, 5).map((progress) => (
+                    {userData.lessonProgress.slice(0, 5).map((progress: any) => (
                       <div key={progress.id} className="flex items-center space-x-3">
                         <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                         <div>
@@ -197,7 +200,7 @@ export default async function DashboardPage() {
                   </p>
                 ) : (
                   <div className="space-y-4">
-                    {upcomingSessions.map((session) => (
+                    {upcomingSessions.map((session: any) => (
                       <div key={session.id} className="border rounded-lg p-3">
                         <h4 className="font-semibold text-sm">{session.title}</h4>
                         <p className="text-xs text-gray-600">{session.courseName}</p>

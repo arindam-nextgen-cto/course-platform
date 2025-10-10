@@ -3,8 +3,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { formatCurrency } from '@/lib/utils'
+import { CourseWithCohorts } from '@/lib/types'
 
-async function getCourses() {
+export const dynamic = 'force-dynamic'
+
+async function getCourses(): Promise<CourseWithCohorts[]> {
   return await prisma.course.findMany({
     include: {
       cohorts: {
@@ -77,7 +80,7 @@ export default async function CoursesPage() {
               <p className="text-gray-600">Check back soon for new cohorts!</p>
             </div>
           ) : (
-            courses.map((course) => (
+            courses.map((course: CourseWithCohorts) => (
               <Card key={course.id} className="hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <div className="flex justify-between items-start">
@@ -109,7 +112,7 @@ export default async function CoursesPage() {
                           Upcoming Cohorts:
                         </h4>
                         <div className="space-y-2">
-                          {course.cohorts.slice(0, 2).map((cohort) => (
+                          {course.cohorts.slice(0, 2).map((cohort: any) => (
                             <div key={cohort.id} className="flex justify-between items-center text-sm">
                               <span className="text-gray-600">
                                 {cohort.startDate 
