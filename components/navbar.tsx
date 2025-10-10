@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { createClientSupabaseClient } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
 import {
@@ -23,6 +23,8 @@ export default function Navbar({ initialSession }: { initialSession: Session | n
   const [isScrolled, setIsScrolled] = useState(false)
   const supabase = createClientSupabaseClient()
   const router = useRouter()
+  const pathname = usePathname()
+  const [isOpen, setIsOpen] = useState(false)
 
   useEffect(() => {
     const {
@@ -42,6 +44,17 @@ export default function Navbar({ initialSession }: { initialSession: Session | n
     window.addEventListener('scroll', onScroll)
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
+
+  // close the mobile menu when the route changes
+  useEffect(() => {
+    setIsOpen(false)
+  }, [pathname])
+
+  const isActive = (href: string) => {
+    if (!pathname) return false
+    if (href === '/') return pathname === '/'
+    return pathname === href || pathname.startsWith(href + '/')
+  }
 
   const handleSignOut = async () => {
     setLoading(true)
@@ -108,6 +121,17 @@ export default function Navbar({ initialSession }: { initialSession: Session | n
 
         {/* User Actions */}
         <div className="flex items-center space-x-3">
+          {/* Mobile menu toggle (visible on small screens) */}
+          <button
+            onClick={() => setIsOpen(s => !s)}
+            aria-expanded={isOpen}
+            aria-label={isOpen ? 'Close menu' : 'Open menu'}
+            className="md:hidden p-2 rounded-md hover:bg-white/3 transition-colors"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-white">
+              <path d={isOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16M4 18h16'} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
           {session ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -189,6 +213,38 @@ export default function Navbar({ initialSession }: { initialSession: Session | n
           )}
         </div>
       </div>
+      {/* Mobile nav overlay */}
+      {isOpen && (
+        <div className="mobile-nav md:hidden" role="dialog" aria-modal="true">
+          <div className="container mx-auto px-4 py-4">
+            <div className="flex flex-col gap-4">
+              <Link href="/courses" className="nav-link" aria-current={isActive('/courses') ? 'page' : undefined} onClick={() => setIsOpen(false)}>
+                Courses
+              </Link>
+              <Link href="/about" className="nav-link" aria-current={isActive('/about') ? 'page' : undefined} onClick={() => setIsOpen(false)}>
+                About
+              </Link>
+              <Link href="/pricing" className="nav-link" aria-current={isActive('/pricing') ? 'page' : undefined} onClick={() => setIsOpen(false)}>
+                Pricing
+              </Link>
+              {session ? (
+                <>
+                  <Link href="/dashboard" className="nav-link" onClick={() => setIsOpen(false)}>Dashboard</Link>
+                  <Link href="/profile" className="nav-link" onClick={() => setIsOpen(false)}>Profile</Link>
+                  <button className="nav-link text-left" onClick={handleSignOut}>Sign out</button>
+                </>
+              ) : (
+                <div className="flex flex-col gap-2 pt-2">
+                  <Link href="/auth/signin" className="nav-link" onClick={() => setIsOpen(false)}>Sign In</Link>
+                  <Link href="/auth/signup" className="inline-block">
+                    <Button className="w-full bg-gradient-to-r from-orange-400 to-red-600 text-white">Get Started</Button>
+                  </Link>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   )
 }

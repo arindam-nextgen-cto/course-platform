@@ -199,3 +199,49 @@
 .shadow-lg {
   box-shadow: 0 8px 30px rgba(2,6,23,0.6);
 }
+
+/* Nav underline using pseudo-element for animated gradient bar */
+.nav-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  bottom: -8px;
+  width: calc(100% - 12px);
+  height: 3px;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--accent-2)));
+  transform-origin: center;
+  transition: transform .22s ease, opacity .22s ease;
+  opacity: 0;
+}
+.nav-link:hover::after,
+.nav-link[aria-current='page']::after {
+  transform: translateX(-50%) scaleX(1);
+  opacity: 1;
+}
+
+/* Mobile nav overlay */
+.mobile-nav {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  background: linear-gradient(180deg, rgba(3,6,14,0.98), rgba(3,6,14,0.96));
+  border-top: 1px solid rgba(255,255,255,0.03);
+  z-index: 50;
+  animation: slide-down 220ms cubic-bezier(.2,.9,.2,1) both;
+}
+.mobile-nav .nav-link {
+  padding: 10px 0;
+  font-size: 1.05rem;
+}
+@keyframes slide-down {
+  from { opacity: 0; transform: translateY(-6px) }
+  to { opacity: 1; transform: translateY(0) }
+}
