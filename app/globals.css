@@ -245,3 +245,52 @@
   from { opacity: 0; transform: translateY(-6px) }
   to { opacity: 1; transform: translateY(0) }
 }
+
+/* Mobile drawer styles */
+.mobile-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+}
+.mobile-drawer-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  transition: opacity 240ms ease;
+  pointer-events: auto;
+}
+.mobile-drawer-panel {
+  position: relative;
+  margin-top: 12px;
+  background: linear-gradient(180deg, rgba(6,8,12,0.99), rgba(6,8,12,0.97));
+  border-radius: 12px;
+  padding: 18px;
+  max-height: calc(100vh - 56px);
+  overflow: auto;
+  transform: translateY(-8%);
+  opacity: 0;
+  transition: transform 320ms cubic-bezier(.2,.9,.2,1), opacity 220ms ease;
+}
+.mobile-drawer.open .mobile-drawer-backdrop {
+  opacity: 1;
+}
+.mobile-drawer.open .mobile-drawer-panel {
+  transform: translateY(0);
+  opacity: 1;
+}
+.mobile-drawer.closed .mobile-drawer-backdrop {
+  opacity: 0;
+}
+.mobile-drawer.closed .mobile-drawer-panel {
+  transform: translateY(-6%);
+  opacity: 0;
+}
+
+/* make nav items larger on mobile */
+.mobile-drawer-panel .nav-link {
+  font-size: 1.05rem;
+  padding: 8px 0;
+}

@@ -50,6 +50,16 @@ export default function Navbar({ initialSession }: { initialSession: Session | n
     setIsOpen(false)
   }, [pathname])
 
+  // Lock body scroll when mobile drawer is open
+  useEffect(() => {
+    if (typeof document === 'undefined') return
+    const prev = document.body.style.overflow
+    document.body.style.overflow = isOpen ? 'hidden' : prev
+    return () => {
+      document.body.style.overflow = prev
+    }
+  }, [isOpen])
+
   const isActive = (href: string) => {
     if (!pathname) return false
     if (href === '/') return pathname === '/'
@@ -214,37 +224,56 @@ export default function Navbar({ initialSession }: { initialSession: Session | n
         </div>
       </div>
       {/* Mobile nav overlay */}
-      {isOpen && (
-        <div className="mobile-nav md:hidden" role="dialog" aria-modal="true">
-          <div className="container mx-auto px-4 py-4">
-            <div className="flex flex-col gap-4">
-              <Link href="/courses" className="nav-link" aria-current={isActive('/courses') ? 'page' : undefined} onClick={() => setIsOpen(false)}>
-                Courses
-              </Link>
-              <Link href="/about" className="nav-link" aria-current={isActive('/about') ? 'page' : undefined} onClick={() => setIsOpen(false)}>
-                About
-              </Link>
-              <Link href="/pricing" className="nav-link" aria-current={isActive('/pricing') ? 'page' : undefined} onClick={() => setIsOpen(false)}>
-                Pricing
-              </Link>
-              {session ? (
-                <>
-                  <Link href="/dashboard" className="nav-link" onClick={() => setIsOpen(false)}>Dashboard</Link>
-                  <Link href="/profile" className="nav-link" onClick={() => setIsOpen(false)}>Profile</Link>
-                  <button className="nav-link text-left" onClick={handleSignOut}>Sign out</button>
-                </>
-              ) : (
-                <div className="flex flex-col gap-2 pt-2">
-                  <Link href="/auth/signin" className="nav-link" onClick={() => setIsOpen(false)}>Sign In</Link>
-                  <Link href="/auth/signup" className="inline-block">
-                    <Button className="w-full bg-gradient-to-r from-orange-400 to-red-600 text-white">Get Started</Button>
-                  </Link>
-                </div>
-              )}
+      {/* Mobile drawer (animated) */}
+      <div
+        className={`mobile-drawer md:hidden ${isOpen ? 'open' : 'closed'}`}
+        role="dialog"
+        aria-modal="true"
+        aria-hidden={!isOpen}
+      >
+        <div className="mobile-drawer-backdrop" onClick={() => setIsOpen(false)} />
+        <div className="mobile-drawer-panel container mx-auto px-4 py-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm">N</span>
+              </div>
+              <div className="text-white font-semibold">NextGen-CTO</div>
             </div>
+            <button onClick={() => setIsOpen(false)} aria-label="Close menu" className="p-2 rounded-md hover:bg-white/4">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-white">
+                <path d="M6 18L18 6M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
           </div>
+
+          <nav className="flex flex-col gap-3">
+            <Link href="/courses" className="nav-link" aria-current={isActive('/courses') ? 'page' : undefined} onClick={() => setIsOpen(false)}>
+              Courses
+            </Link>
+            <Link href="/about" className="nav-link" aria-current={isActive('/about') ? 'page' : undefined} onClick={() => setIsOpen(false)}>
+              About
+            </Link>
+            <Link href="/pricing" className="nav-link" aria-current={isActive('/pricing') ? 'page' : undefined} onClick={() => setIsOpen(false)}>
+              Pricing
+            </Link>
+            {session ? (
+              <>
+                <Link href="/dashboard" className="nav-link" onClick={() => setIsOpen(false)}>Dashboard</Link>
+                <Link href="/profile" className="nav-link" onClick={() => setIsOpen(false)}>Profile</Link>
+                <button className="nav-link text-left" onClick={handleSignOut}>Sign out</button>
+              </>
+            ) : (
+              <div className="flex flex-col gap-3 pt-4">
+                <Link href="/auth/signin" className="nav-link" onClick={() => setIsOpen(false)}>Sign In</Link>
+                <Link href="/auth/signup" className="inline-block" onClick={() => setIsOpen(false)}>
+                  <Button className="w-full bg-gradient-to-r from-orange-400 to-red-600 text-white">Get Started</Button>
+                </Link>
+              </div>
+            )}
+          </nav>
         </div>
-      )}
+      </div>
     </header>
   )
 }
