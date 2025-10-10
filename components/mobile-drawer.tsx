@@ -106,29 +106,29 @@ export default function MobileDrawer({
                                 </button>
                             </div>
 
-                            <nav className="flex flex-col gap-3">
-                                <Link href="/courses" className="nav-link" onClick={() => setIsOpen(false)}>
+                            <nav className="flex flex-col gap-3" aria-label="Mobile navigation">
+                                <Link href="/courses" className="nav-link" onClick={() => setIsOpen(false)} aria-current={currentPathname?.startsWith('/courses') ? 'page' : undefined}>
                                     Courses
                                 </Link>
-                                <Link href="/about" className="nav-link" onClick={() => setIsOpen(false)}>
+                                <Link href="/about" className="nav-link" onClick={() => setIsOpen(false)} aria-current={currentPathname?.startsWith('/about') ? 'page' : undefined}>
                                     About
                                 </Link>
-                                <Link href="/pricing" className="nav-link" onClick={() => setIsOpen(false)}>
+                                <Link href="/pricing" className="nav-link" onClick={() => setIsOpen(false)} aria-current={currentPathname?.startsWith('/pricing') ? 'page' : undefined}>
                                     Pricing
                                 </Link>
 
                                 {session ? (
                                     <>
-                                        <Link href="/dashboard" className="nav-link" onClick={() => setIsOpen(false)}>Dashboard</Link>
-                                        <Link href="/profile" className="nav-link" onClick={() => setIsOpen(false)}>Profile</Link>
-                                        <button className="nav-link text-left" onClick={() => { setIsOpen(false); onSignOut(); }}>{loading ? 'Signing out...' : 'Sign out'}</button>
+                                        <Link href="/dashboard" className="nav-link" onClick={() => setIsOpen(false)} aria-current={currentPathname?.startsWith('/dashboard') ? 'page' : undefined}>Dashboard</Link>
+                                        <Link href="/profile" className="nav-link" onClick={() => setIsOpen(false)} aria-current={currentPathname?.startsWith('/profile') ? 'page' : undefined}>Profile</Link>
+                                        <button className="nav-link text-left" onClick={() => { setIsOpen(false); onSignOut(); }} aria-disabled={loading} aria-busy={loading}>{loading ? 'Signing out...' : 'Sign out'}</button>
                                     </>
                                 ) : (
                                     <div className="flex flex-col gap-3 pt-4">
-                                        <Link href="/auth/signin" className="nav-link" onClick={() => setIsOpen(false)}>Sign In</Link>
-                                        <Link href="/auth/signup" className="inline-block" onClick={() => setIsOpen(false)}>
-                                            <Button className="w-full bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--accent-2))] text-white">Get Started</Button>
-                                        </Link>
+                                        <Link href="/auth/signin" className="nav-link" onClick={() => setIsOpen(false)} aria-current={currentPathname?.startsWith('/auth/signin') ? 'page' : undefined}>Sign In</Link>
+                                        <Button asChild className="w-full">
+                                            <Link href="/auth/signup" onClick={() => setIsOpen(false)} className="w-full bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--accent-2))] text-white inline-flex items-center justify-center py-2 rounded-md">Get Started</Link>
+                                        </Button>
                                     </div>
                                 )}
                             </nav>

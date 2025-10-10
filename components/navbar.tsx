@@ -85,11 +85,11 @@ export default function Navbar({ initialSession }: { initialSession: Session | n
     return (
         <>
             <header className={headerClass}>
-                <div className="container mx-auto px-4 py-3 flex justify-between items-center relative">
+                <div className="container mx-auto px-4 py-3 grid grid-cols-3 items-center relative">
                     {/* Logo */}
-                    <div className="flex items-center space-x-4">
-                        <Link href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity" aria-label="NextGen-CTO home">
-                            <div className="w-8 h-8 bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--accent-2))] rounded-lg flex items-center justify-center cursor-pointer" aria-hidden>
+                    <div className="flex items-center space-x-4 col-span-1 z-20">
+                        <Link href="/" aria-label="NextGen-CTO home" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
+                            <div className="w-8 h-8 bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--accent-2))] rounded-lg flex items-center justify-center" aria-hidden="true">
                                 <span className="text-white font-bold text-sm">N</span>
                             </div>
                             <h1 className="text-xl font-bold text-white">NextGen-CTO</h1>
@@ -101,25 +101,25 @@ export default function Navbar({ initialSession }: { initialSession: Session | n
                     </div>
 
                     {/* Navigation (centered on wide screens) */}
-                    <nav className="hidden md:flex absolute inset-x-0 h-full items-center justify-center space-x-10">
-                        <Link href="/courses" className="nav-link">
+                    <nav role="navigation" className="hidden md:flex col-span-1 items-center justify-center space-x-10">
+                        <Link href="/courses" className="nav-link" aria-current={isActive('/courses') ? 'page' : undefined}>
                             Courses
                         </Link>
                         {session && (
-                            <Link href="/dashboard" className="nav-link">
+                            <Link href="/dashboard" className="nav-link" aria-current={isActive('/dashboard') ? 'page' : undefined}>
                                 Dashboard
                             </Link>
                         )}
-                        <Link href="/about" className="nav-link">
+                        <Link href="/about" className="nav-link" aria-current={isActive('/about') ? 'page' : undefined}>
                             About
                         </Link>
-                        <Link href="/pricing" className="nav-link">
+                        <Link href="/pricing" className="nav-link" aria-current={isActive('/pricing') ? 'page' : undefined}>
                             Pricing
                         </Link>
                     </nav>
 
                     {/* User Actions */}
-                    <div className="flex items-center space-x-3">
+                    <div className="flex items-center justify-end space-x-3 col-span-1">
                         {/* Mobile drawer toggle */}
                         {/* MobileDrawer is a dedicated client component that handles its own state */}
                         <MobileDrawer session={session} loading={loading} onSignOut={handleSignOut} currentPathname={currentPathname} />
@@ -190,16 +190,12 @@ export default function Navbar({ initialSession }: { initialSession: Session | n
                             </DropdownMenu>
                         ) : (
                             <>
-                                <Link href="/auth/signin" className="hidden md:inline-flex">
-                                    <Button variant="ghost" className="font-medium text-white hover:bg-gray-800">
-                                        Sign In
-                                    </Button>
-                                </Link>
-                                <Link href="/auth/signup" className="hidden md:inline-flex">
-                                    <Button className="bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--accent-2))] text-white font-medium shadow-md hover:shadow-lg transform-gpu transition-shadow duration-200">
-                                        Get Started
-                                    </Button>
-                                </Link>
+                                <Button asChild variant="ghost" className="hidden md:inline-flex font-medium text-white hover:bg-gray-800">
+                                    <Link href="/auth/signin">Sign In</Link>
+                                </Button>
+                                <Button asChild className="hidden md:inline-flex bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--accent-2))] text-white font-medium shadow-md hover:shadow-lg transform-gpu transition-shadow duration-200">
+                                    <Link href="/auth/signup">Get Started</Link>
+                                </Button>
                             </>
                         )}
                     </div>

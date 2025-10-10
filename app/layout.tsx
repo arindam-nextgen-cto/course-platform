@@ -25,6 +25,7 @@ export default async function RootLayout({
   } = await supabase.auth.getSession()
 
   // Try to detect the current request pathname so we can suppress the navbar
+  // Try to detect the current request pathname so we can suppress the navbar
   // on auth routes (so sign-in/up pages don't show the app navbar). Next.js
   // doesn't provide a single guaranteed header name across runtimes, so try
   // a few common header names and fall back to empty string.

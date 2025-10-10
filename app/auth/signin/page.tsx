@@ -6,7 +6,7 @@ import { createClientSupabaseClient } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import Link from 'next/link'
-import { Github, ArrowLeft, AlertCircle } from 'lucide-react'
+import { Github, AlertCircle } from 'lucide-react'
 
 export default function SignInPage() {
   const [loading, setLoading] = useState(false)
@@ -48,28 +48,15 @@ export default function SignInPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
-        {/* Header */}
+        {/* Compact header for conversion focus */}
         <div className="text-center">
-          <Link href="/" className="inline-flex items-center space-x-2 text-white hover:text-orange-400 transition-colors mb-8">
-            <ArrowLeft className="w-4 h-4" />
-            <span>Back to home</span>
-          </Link>
-
-          <div className="flex items-center justify-center space-x-2 mb-6">
-            <div className="w-10 h-10 bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--accent-2))] rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold">N</span>
-            </div>
-            <h1 className="text-2xl font-bold text-white">NextGen-CTO</h1>
+          <div className="mx-auto mb-4 w-10 h-10 bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--accent-2))] rounded-lg flex items-center justify-center">
+            <span className="text-white font-bold">N</span>
           </div>
 
-          <h2 className="text-3xl font-bold text-white mb-2">
-            Welcome back
-          </h2>
-          <p className="text-gray-400">
-            Continue your learning journey with us
-          </p>
+          <h2 className="text-2xl font-semibold text-white mb-1">Welcome back</h2>
+          <p className="text-sm text-gray-400">Sign in to continue to your dashboard</p>
         </div>
 
         {/* Error Message */}
@@ -80,19 +67,13 @@ export default function SignInPage() {
           </div>
         )}
 
-        {/* Sign In Card */}
-        <Card className="bg-gray-800/50 border-gray-700 backdrop-blur-sm">
-          <CardHeader className="text-center">
-            <CardTitle className="text-white">Sign in to your account</CardTitle>
-            <CardDescription className="text-gray-400">
-              Choose your preferred sign-in method
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
+        {/* Sign In Card (focused) */}
+        <Card className="bg-gray-800/60 border-gray-700 backdrop-blur-sm">
+          <CardContent className="space-y-4 py-8">
             <Button
               onClick={() => handleOAuthSignIn('google')}
               disabled={loading}
-              className="w-full bg-white hover:bg-gray-100 text-gray-900 border-0"
+              className="w-full py-4 text-lg bg-white hover:bg-gray-100 text-gray-900 border-0 flex items-center justify-center"
               size="lg"
             >
               <svg className="w-5 h-5 mr-3" viewBox="0 0 24 24">
@@ -119,7 +100,7 @@ export default function SignInPage() {
             <Button
               onClick={() => handleOAuthSignIn('github')}
               disabled={loading}
-              className="w-full bg-gray-900 hover:bg-gray-800 text-white border border-gray-600"
+              className="w-full py-4 text-lg bg-gray-900 hover:bg-gray-800 text-white border border-gray-600 flex items-center justify-center"
               size="lg"
             >
               <Github className="w-5 h-5 mr-3" />
@@ -128,27 +109,17 @@ export default function SignInPage() {
           </CardContent>
         </Card>
 
-        {/* Footer */}
-        <div className="text-center space-y-4">
-          <p className="text-gray-400">
-            Don't have an account?{' '}
-            <Link href="/auth/signup" className="font-medium text-orange-400 hover:text-orange-300 transition-colors">
-              Sign up for free
-            </Link>
+        {/* Minimal footer */}
+        <div className="text-center">
+          <p className="text-gray-400 text-sm">
+            New here?{' '}
+            <Button asChild variant="link">
+              <Link href="/auth/signup" className="font-medium text-orange-400 hover:text-orange-300">Create an account</Link>
+            </Button>
           </p>
 
-          <p className="text-xs text-gray-500">
-            By signing in, you agree to our{' '}
-            <Link href="/terms" className="text-orange-400 hover:text-orange-300 transition-colors">
-              Terms of Service
-            </Link>{' '}
-            and{' '}
-            <Link href="/privacy" className="text-orange-400 hover:text-orange-300 transition-colors">
-              Privacy Policy
-            </Link>
-          </p>
+          <p className="text-xs text-gray-500 mt-3">By signing in you agree to our <Link href="/terms" className="text-orange-400">Terms</Link> and <Link href="/privacy" className="text-orange-400">Privacy</Link>.</p>
         </div>
       </div>
-    </div>
   )
 }

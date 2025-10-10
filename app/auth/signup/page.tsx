@@ -4,9 +4,9 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClientSupabaseClient } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import Link from 'next/link'
-import { Github, ArrowLeft, AlertCircle, CheckCircle } from 'lucide-react'
+import { Github, AlertCircle } from 'lucide-react'
 
 export default function SignUpPage() {
   const [loading, setLoading] = useState(false)
@@ -46,28 +46,15 @@ export default function SignUpPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
-        {/* Header */}
+        {/* Compact header */}
         <div className="text-center">
-          <Link href="/" className="inline-flex items-center space-x-2 text-white hover:text-orange-400 transition-colors mb-8">
-            <ArrowLeft className="w-4 h-4" />
-            <span>Back to home</span>
-          </Link>
-
-          <div className="flex items-center justify-center space-x-2 mb-6">
-            <div className="w-10 h-10 bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--accent-2))] rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold">N</span>
-            </div>
-            <h1 className="text-2xl font-bold text-white">NextGen-CTO</h1>
+          <div className="mx-auto mb-4 w-10 h-10 bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--accent-2))] rounded-lg flex items-center justify-center">
+            <span className="text-white font-bold">N</span>
           </div>
 
-          <h2 className="text-3xl font-bold text-white mb-2">
-            Join our community
-          </h2>
-          <p className="text-gray-400">
-            Start your tech learning journey today
-          </p>
+          <h2 className="text-2xl font-semibold text-white mb-1">Create your account</h2>
+          <p className="text-sm text-gray-400">Join cohorts, build projects, and learn with peers.</p>
         </div>
 
         {/* Error Message */}
@@ -78,42 +65,13 @@ export default function SignUpPage() {
           </div>
         )}
 
-        {/* Benefits */}
-        <div className="bg-gray-800/30 border border-gray-700 rounded-lg p-4 space-y-3">
-          <h3 className="text-white font-semibold text-sm">What you'll get:</h3>
-          <div className="space-y-2">
-            <div className="flex items-center space-x-2">
-              <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />
-              <span className="text-gray-300 text-sm">Access to live cohort-based courses</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />
-              <span className="text-gray-300 text-sm">Expert mentorship and guidance</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />
-              <span className="text-gray-300 text-sm">Community support and networking</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />
-              <span className="text-gray-300 text-sm">Real-world project experience</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Sign Up Card */}
-        <Card className="bg-gray-800/50 border-gray-700 backdrop-blur-sm">
-          <CardHeader className="text-center">
-            <CardTitle className="text-white">Create your account</CardTitle>
-            <CardDescription className="text-gray-400">
-              Get started with your preferred sign-up method
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
+        {/* Sign Up Card (focused) */}
+        <Card className="bg-gray-800/60 border-gray-700 backdrop-blur-sm">
+          <CardContent className="space-y-4 py-8">
             <Button
               onClick={() => handleOAuthSignUp('google')}
               disabled={loading}
-              className="w-full bg-white hover:bg-gray-100 text-gray-900 border-0"
+              className="w-full py-4 text-lg bg-white hover:bg-gray-100 text-gray-900 border-0 flex items-center justify-center"
               size="lg"
             >
               <svg className="w-5 h-5 mr-3" viewBox="0 0 24 24">
@@ -140,7 +98,7 @@ export default function SignUpPage() {
             <Button
               onClick={() => handleOAuthSignUp('github')}
               disabled={loading}
-              className="w-full bg-gray-900 hover:bg-gray-800 text-white border border-gray-600"
+              className="w-full py-4 text-lg bg-gray-900 hover:bg-gray-800 text-white border border-gray-600 flex items-center justify-center"
               size="lg"
             >
               <Github className="w-5 h-5 mr-3" />
@@ -149,27 +107,11 @@ export default function SignUpPage() {
           </CardContent>
         </Card>
 
-        {/* Footer */}
-        <div className="text-center space-y-4">
-          <p className="text-gray-400">
-            Already have an account?{' '}
-            <Link href="/auth/signin" className="font-medium text-orange-400 hover:text-orange-300 transition-colors">
-              Sign in here
-            </Link>
-          </p>
-
-          <p className="text-xs text-gray-500">
-            By creating an account, you agree to our{' '}
-            <Link href="/terms" className="text-orange-400 hover:text-orange-300 transition-colors">
-              Terms of Service
-            </Link>{' '}
-            and{' '}
-            <Link href="/privacy" className="text-orange-400 hover:text-orange-300 transition-colors">
-              Privacy Policy
-            </Link>
-          </p>
+        {/* Minimal footer */}
+        <div className="text-center">
+          <p className="text-gray-400 text-sm">Already have an account? <Button asChild variant="link"><Link href="/auth/signin" className="font-medium text-orange-400 hover:text-orange-300">Sign in</Link></Button></p>
+          <p className="text-xs text-gray-500 mt-3">By creating an account you agree to our <Link href="/terms" className="text-orange-400">Terms</Link> and <Link href="/privacy" className="text-orange-400">Privacy</Link>.</p>
         </div>
       </div>
-    </div>
   )
 }
