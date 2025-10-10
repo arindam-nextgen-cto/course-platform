@@ -302,6 +302,21 @@
   opacity: 0;
 }
 
+/* Root-class fallback: if html has this, force drawer visible (useful if component class toggling is blocked) */
+.mobile-drawer-open .mobile-drawer-backdrop {
+  opacity: 1 !important;
+}
+.mobile-drawer-open .mobile-drawer-panel {
+  transform: translateY(0) !important;
+  opacity: 1 !important;
+}
+
+/* Ensure hamburger is always tappable on small screens */
+.mobile-hamburger {
+  z-index: 80;
+  position: relative;
+}
+
 /* make nav items larger on mobile */
 .mobile-drawer-panel .nav-link {
   font-size: 1.05rem;

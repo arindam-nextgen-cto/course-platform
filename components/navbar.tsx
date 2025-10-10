@@ -55,8 +55,11 @@ export default function Navbar({ initialSession }: { initialSession: Session | n
     if (typeof document === 'undefined') return
     const prev = document.body.style.overflow
     document.body.style.overflow = isOpen ? 'hidden' : prev
+    // Add a root-level class so CSS can react even if component-level classes are blocked
+    document.documentElement.classList.toggle('mobile-drawer-open', isOpen)
     return () => {
       document.body.style.overflow = prev
+      document.documentElement.classList.remove('mobile-drawer-open')
     }
   }, [isOpen])
 
@@ -137,7 +140,7 @@ export default function Navbar({ initialSession }: { initialSession: Session | n
             onClick={() => setIsOpen(s => !s)}
             aria-expanded={isOpen}
             aria-label={isOpen ? 'Close menu' : 'Open menu'}
-            className="md:hidden p-2 rounded-md hover:bg-white/3 transition-colors"
+            className="md:hidden p-2 rounded-md hover:bg-white/3 transition-colors mobile-hamburger"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-white">
               <path d={isOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16M4 18h16'} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
