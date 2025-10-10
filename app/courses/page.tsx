@@ -48,23 +48,6 @@ export default async function CoursesPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold text-gray-900">
-            NextGen-CTO
-          </Link>
-          <nav className="flex items-center space-x-4">
-            <Link href="/dashboard">
-              <Button variant="outline">Dashboard</Button>
-            </Link>
-            <Link href="/auth/signin">
-              <Button>Sign In</Button>
-            </Link>
-          </nav>
-        </div>
-      </header>
-
       {/* Page Content */}
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
