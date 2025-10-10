@@ -59,15 +59,16 @@ export default function Hero() {
                     </div>
 
                     <div className="relative hero-illustration flex justify-center lg:justify-end">
-                        <div className="hero-image-frame flex items-center">
-                            <div className="hero-image-wrapper lg:h-full w-full">
+                        {/* make the mockup responsive: allow the frame to scale down and give the wrapper explicit heights for Image.fill */}
+                        <div className="hero-image-frame flex items-center w-full max-w-[560px]">
+                            <div className="hero-image-wrapper w-full h-[220px] sm:h-[300px] md:h-[360px] lg:h-full">
                                 <Image
                                     src={anuj}
                                     alt="Course app mockup"
                                     fill
-                                    className="hero-image"
+                                    className="hero-image rounded-lg"
                                     priority
-                                    sizes="(min-width: 1024px) 560px, 80vw"
+                                    sizes="(min-width: 1024px) 560px, (min-width: 640px) 50vw, 90vw"
                                 />
                             </div>
                             <div className="hero-image-gradient" aria-hidden />

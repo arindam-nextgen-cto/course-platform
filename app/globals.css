@@ -123,6 +123,22 @@
   border-radius: 12px;
 }
 
+/* Mobile-optimized crop: shift focus slightly up on small screens and hide the decorative gradient */
+@media (max-width: 639px) {
+  .hero-image {
+    object-position: 50% 18%; /* focus the upper portion of the mockup on phones */
+    transform: scale(1.05);
+  }
+
+  .hero-image-gradient {
+    display: none;
+  }
+
+  .hero-image-frame {
+    max-width: 92%;
+  }
+}
+
 .hero-image-wrapper {
   width: 100%;
   height: min(46vh, 360px);
