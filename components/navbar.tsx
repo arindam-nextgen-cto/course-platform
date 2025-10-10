@@ -48,6 +48,9 @@ export default function Navbar({ initialSession }: { initialSession: Session | n
     // Mobile drawer is handled by a dedicated client component
     const currentPathname = pathname
 
+    // Hide the global navbar on authentication routes to reduce distraction
+    if (pathname?.startsWith('/auth')) return null
+
     const isActive = (href: string) => {
         if (!pathname) return false
         if (href === '/') return pathname === '/'

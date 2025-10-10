@@ -1,7 +1,14 @@
+'use client'
+
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 export default function Footer() {
     const year = new Date().getFullYear()
+    const pathname = usePathname()
+
+    // Hide footer on auth routes to keep auth screens minimal and focused
+    if (pathname?.startsWith('/auth')) return null
 
     return (
         <footer className="bg-black border-t border-gray-800 text-white py-16">
