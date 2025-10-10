@@ -264,11 +264,13 @@
   position: fixed;
   inset: 0;
   z-index: 60;
-  pointer-events: none; /* default: ignore pointer events when closed */
+  pointer-events: none;
+  /* default: ignore pointer events when closed */
 }
 
 .mobile-drawer.open {
-  pointer-events: auto; /* allow interactions when open */
+  pointer-events: auto;
+  /* allow interactions when open */
 }
 
 .mobile-drawer.closed {
@@ -298,7 +300,8 @@
   border-radius: 12px 0 0 12px;
   padding: 18px;
   overflow: auto;
-  transform: translateX(100%); /* default off-canvas */
+  transform: translateX(100%);
+  /* default off-canvas */
   opacity: 0;
   transition: transform 320ms cubic-bezier(.2, .9, .2, 1), opacity 220ms ease;
   box-sizing: border-box;
@@ -324,7 +327,7 @@
   padding: 14px 0;
   font-size: 1.125rem;
   font-weight: 700;
-  color: rgba(255,255,255,0.95);
+  color: rgba(255, 255, 255, 0.95);
 }
 
 .mobile-drawer-panel .cta-group {
@@ -337,7 +340,7 @@
 }
 
 .mobile-drawer-panel .nav-link:hover {
-  background: rgba(255,255,255,0.02);
+  background: rgba(255, 255, 255, 0.02);
   transform: none;
 }
 
