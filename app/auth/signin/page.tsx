@@ -51,10 +51,6 @@ export default function SignInPage() {
       <div className="max-w-md w-full space-y-8">
         {/* Compact header for conversion focus */}
         <div className="text-center">
-          <div className="mx-auto mb-4 w-10 h-10 bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--accent-2))] rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold">N</span>
-          </div>
-
           <h2 className="text-2xl font-semibold text-white mb-1">Welcome back</h2>
           <p className="text-sm text-gray-400">Sign in to continue to your dashboard</p>
         </div>
