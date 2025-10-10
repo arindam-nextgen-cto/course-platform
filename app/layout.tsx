@@ -35,7 +35,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-  {session && !isAuthRoute ? <Navbar initialSession={session} /> : null}
+        {session && !isAuthRoute ? <Navbar initialSession={session} /> : null}
         {children}
       </body>
     </html>

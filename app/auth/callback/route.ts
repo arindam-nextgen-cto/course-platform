@@ -6,6 +6,7 @@ import { prisma } from '@/lib/prisma'
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url)
   const code = requestUrl.searchParams.get('code')
+  const redirectTo = requestUrl.searchParams.get('redirectTo') || '/dashboard'
 
   if (code) {
     const cookieStore = cookies()
@@ -19,23 +20,24 @@ export async function GET(request: NextRequest) {
         await prisma.user.upsert({
           where: { email: session.user.email! },
           update: {
-            name: session.user.user_metadata?.full_name || session.user.user_metadata?.name,
+            name: session.user.user_metadata?.full_name || session.user.user_metadata?.name || session.user.user_metadata?.user_name,
             avatar: session.user.user_metadata?.avatar_url,
           },
           create: {
             id: session.user.id,
             email: session.user.email!,
-            name: session.user.user_metadata?.full_name || session.user.user_metadata?.name,
+            name: session.user.user_metadata?.full_name || session.user.user_metadata?.name || session.user.user_metadata?.user_name || 'User',
             avatar: session.user.user_metadata?.avatar_url,
             role: 'STUDENT', // Default role
           },
         })
       } catch (dbError) {
         console.error('Database error:', dbError)
+        // Continue with redirect even if database update fails
       }
     }
   }
 
   // URL to redirect to after sign in process completes
-  return NextResponse.redirect(new URL('/dashboard', request.url))
+  return NextResponse.redirect(new URL(redirectTo, request.url))
 }

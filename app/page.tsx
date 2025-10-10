@@ -24,14 +24,14 @@ export default function HomePage() {
                 Build production-ready skills through live cohorts, peer collaboration, and expert mentorship.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 mb-12">
-                <Link href="/courses">
+                <Link href="/auth/signup">
                   <Button size="lg" className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 font-medium px-8">
-                    Start Learning
+                    Start Learning Today
                   </Button>
                 </Link>
-                <Link href="/demo">
+                <Link href="/courses">
                   <Button variant="outline" size="lg" className="font-medium px-8 border-gray-600 text-gray-300 hover:bg-gray-800">
-                    Watch Demo
+                    Browse Courses
                   </Button>
                 </Link>
               </div>
@@ -368,12 +368,12 @@ export default function HomePage() {
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link href="/auth/signup">
               <Button size="lg" className="bg-white text-orange-600 hover:bg-gray-100 font-medium px-8">
-                Start Learning Today
+                Join Our Community
               </Button>
             </Link>
-            <Link href="/contact">
+            <Link href="/auth/signin">
               <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-orange-600 font-medium px-8">
-                Talk to Advisor
+                Sign In
               </Button>
             </Link>
           </div>
