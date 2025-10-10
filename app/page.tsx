@@ -2,75 +2,12 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import Hero from '@/components/hero'
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-black text-white">
-      {/* Hero Section */}
-      <section className="pt-20 pb-16 px-4 relative">
-        <div className="container mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <Badge variant="secondary" className="mb-6 bg-gray-800 text-orange-400 border-gray-700">
-                🚀 New cohorts starting every month
-              </Badge>
-              <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
-                Consistency
-                <br />
-                and <span className="bg-gradient-to-r from-orange-500 to-red-600 bg-clip-text text-transparent">Community</span>
-              </h1>
-              <p className="text-lg md:text-xl text-gray-300 mb-8 leading-relaxed">
-                Join a structured learning community where consistency meets excellence. 
-                Build production-ready skills through live cohorts, peer collaboration, and expert mentorship.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 mb-12">
-                <Link href="/courses">
-                  <Button size="lg" className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 font-medium px-8">
-                    Explore Courses
-                  </Button>
-                </Link>
-                <Link href="/about">
-                  <Button variant="outline" size="lg" className="font-medium px-8 border-gray-600 text-gray-300 hover:bg-gray-800">
-                    Learn More
-                  </Button>
-                </Link>
-              </div>
-            </div>
-            
-            {/* Hero Image/Video Placeholder */}
-            <div className="relative">
-              <div className="aspect-video bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl border border-gray-700 flex items-center justify-center">
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <span className="text-white text-2xl">▶</span>
-                  </div>
-                  <p className="text-gray-400">Watch our community in action</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          {/* Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto mt-20">
-            <div className="text-center">
-              <div className="text-2xl md:text-3xl font-bold text-white">5000+</div>
-              <div className="text-sm text-gray-400">Active Learners</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl md:text-3xl font-bold text-white">95%</div>
-              <div className="text-sm text-gray-400">Success Rate</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl md:text-3xl font-bold text-white">50+</div>
-              <div className="text-sm text-gray-400">Expert Mentors</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl md:text-3xl font-bold text-white">4.9/5</div>
-              <div className="text-sm text-gray-400">Community Rating</div>
-            </div>
-          </div>
-        </div>
-      </section>
+    <div className="min-h-screen bg-background text-foreground">
+      <Hero />
 
       {/* Trending Section */}
       <section className="py-20 bg-gray-900">

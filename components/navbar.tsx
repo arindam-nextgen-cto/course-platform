@@ -63,12 +63,18 @@ export default function Navbar({ initialSession }: { initialSession: Session | n
     <header className="sticky top-0 z-50 border-b border-gray-800 bg-black/95 backdrop-blur supports-[backdrop-filter]:bg-black/60">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         {/* Logo */}
-        <Link href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
+        <div className="flex items-center space-x-4">
+          <Link href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
           <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg flex items-center justify-center">
             <span className="text-white font-bold text-sm">N</span>
           </div>
           <h1 className="text-xl font-bold text-white">NextGen-CTO</h1>
-        </Link>
+          </Link>
+          {/* Trusted pill */}
+          <div className="hidden md:flex items-center">
+            <div className="trusted-pill text-xs text-gray-300">Trusted by <strong className="ml-1">1.5M+</strong></div>
+          </div>
+        </div>
 
         {/* Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
