@@ -1,58 +1,104 @@
 import { createServerSupabaseClient } from '@/lib/supabase-server'
-import { prisma } from '@/lib/prisma'
+/* Using Supabase server client instead of Prisma */
 import { redirect } from 'next/navigation'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { UserWithEnrollments } from '@/lib/types'
-
+import SignOutButton from '@/components/signout-button'
+ 
 export const dynamic = 'force-dynamic'
-
-async function getUserData(userId: string): Promise<any> {
-  return await prisma.user.findUnique({
-    where: { id: userId },
-    include: {
-      enrollments: {
-        include: {
-          cohort: {
-            include: {
-              course: true,
-              liveSessions: {
-                where: {
-                  startTime: {
-                    gte: new Date()
-                  }
-                },
-                orderBy: {
-                  startTime: 'asc'
-                },
-                take: 3
-              }
-            }
-          }
-        },
-        where: {
-          status: 'ENROLLED'
-        }
-      },
-      lessonProgress: {
-        include: {
-          lesson: {
-            include: {
-              section: {
-                include: {
-                  course: true
-                }
-              }
-            }
-          }
-        },
-        where: {
-          status: 'COMPLETED'
+ 
+// Fetch and assemble user data via Supabase server client.
+// This uses multiple queries and normalizes common fields (startTime, createdAt)
+// to match the shape previously expected by the UI.
+async function getUserData(supabase: any, userId: string): Promise<any> {
+  // Profile (commonly stored in 'profiles')
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', userId)
+    .maybeSingle()
+ 
+  // Enrollments
+  const { data: enrollments } = await supabase
+    .from('enrollments')
+    .select('*')
+    .eq('user_id', userId)
+    .eq('status', 'ENROLLED')
+ 
+  const enrichedEnrollments = await Promise.all((enrollments || []).map(async (enrollment: any) => {
+    const { data: cohort } = await supabase
+      .from('cohorts')
+      .select('*')
+      .eq('id', enrollment.cohort_id)
+      .maybeSingle()
+ 
+    const { data: course } = cohort
+      ? (await supabase.from('courses').select('*').eq('id', cohort.course_id).maybeSingle()).data
+      : null
+ 
+    const { data: liveSessions } = cohort
+      ? await supabase
+          .from('live_sessions')
+          .select('*')
+          .eq('cohort_id', cohort.id)
+          .gte('start_time', new Date().toISOString())
+          .order('start_time', { ascending: true })
+          .limit(3)
+      : { data: [] }
+ 
+    // Normalize fields to match UI expectations
+    const normalizedLiveSessions = (liveSessions || []).map((s: any) => ({
+      ...s,
+      startTime: s.start_time ?? s.startTime,
+      embedUrl: s.embed_url ?? s.embedUrl
+    }))
+ 
+    return {
+      ...enrollment,
+      cohort: {
+        ...cohort,
+        course,
+        liveSessions: normalizedLiveSessions
+      }
+    }
+  }))
+ 
+  // Lesson progress
+  const { data: progressRows } = await supabase
+    .from('lesson_progress')
+    .select('*')
+    .eq('user_id', userId)
+    .eq('status', 'COMPLETED')
+ 
+  const enrichedProgress = await Promise.all((progressRows || []).map(async (p: any) => {
+    const { data: lesson } = await supabase.from('lessons').select('*').eq('id', p.lesson_id).maybeSingle()
+    const { data: section } = lesson ? await supabase.from('sections').select('*').eq('id', lesson.section_id).maybeSingle() : { data: null }
+    const { data: course } = section ? await supabase.from('courses').select('*').eq('id', section.course_id).maybeSingle() : { data: null }
+ 
+    return {
+      ...p,
+      lesson: {
+        ...lesson,
+        section: {
+          ...section,
+          course
         }
       }
     }
-  })
+  }))
+ 
+  // Normalize createdAt
+  const createdAt = profile?.created_at ?? profile?.createdAt
+ 
+  return {
+    ...profile,
+    name: profile?.name ?? profile?.full_name ?? profile?.email,
+    createdAt,
+    enrollments: enrichedEnrollments || [],
+    lessonProgress: enrichedProgress || []
+  }
 }
 
 export default async function DashboardPage() {
@@ -63,7 +109,7 @@ export default async function DashboardPage() {
     redirect('/auth/signin')
   }
 
-  const userData = await getUserData(session.user.id)
+  const userData = await getUserData(supabase, session.user.id)
 
   if (!userData) {
     redirect('/auth/signin')
@@ -79,21 +125,7 @@ export default async function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold text-gray-900">
-            NextGen-CTO
-          </Link>
-          <nav className="flex items-center space-x-4">
-            <Link href="/courses">
-              <Button variant="outline">Browse Courses</Button>
-            </Link>
-            <Button variant="outline">Sign Out</Button>
-          </nav>
-        </div>
-      </header>
-
+      
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-2">
