@@ -1,35 +1,46 @@
-import { prisma } from '@/lib/prisma'
+import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { formatCurrency } from '@/lib/utils'
 import { CourseWithCohorts } from '@/lib/types'
-
+ 
 export const dynamic = 'force-dynamic'
-
+ 
 async function getCourses(): Promise<CourseWithCohorts[]> {
-  return await prisma.course.findMany({
-    include: {
-      cohorts: {
-        where: {
-          status: {
-            in: ['OPEN', 'UPCOMING']
-          }
-        },
-        orderBy: {
-          startDate: 'asc'
-        }
-      },
-      _count: {
-        select: {
-          cohorts: true
-        }
-      }
-    },
-    orderBy: {
-      createdAt: 'desc'
-    }
-  })
+  const supabase = createServerSupabaseClient()
+ 
+  const { data: courses, error: courseError } = await supabase
+    .from('courses')
+    .select('*')
+    .order('createdAt', { ascending: false })
+ 
+  if (courseError) {
+    throw courseError
+  }
+ 
+  const { data: cohorts, error: cohortError } = await supabase
+    .from('cohorts')
+    .select('*')
+    .in('status', ['OPEN', 'UPCOMING'])
+    .order('startDate', { ascending: true })
+ 
+  if (cohortError) {
+    throw cohortError
+  }
+ 
+  const cohortsByCourse = new Map<string, any[]>()
+  for (const c of cohorts || []) {
+    const arr = cohortsByCourse.get(c.courseId) || []
+    arr.push(c)
+    cohortsByCourse.set(c.courseId, arr)
+  }
+ 
+  return (courses || []).map((course: any) => ({
+    ...course,
+    cohorts: (cohortsByCourse.get(course.id) || []).map((cohort) => cohort),
+    _count: { cohorts: (cohortsByCourse.get(course.id) || []).length }
+  }))
 }
 
 export default async function CoursesPage() {
