@@ -24,14 +24,14 @@ export default function HomePage() {
                 Build production-ready skills through live cohorts, peer collaboration, and expert mentorship.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 mb-12">
-                <Link href="/auth/signup">
+                <Link href="/courses">
                   <Button size="lg" className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 font-medium px-8">
-                    Start Learning Today
+                    Explore Courses
                   </Button>
                 </Link>
-                <Link href="/courses">
+                <Link href="/about">
                   <Button variant="outline" size="lg" className="font-medium px-8 border-gray-600 text-gray-300 hover:bg-gray-800">
-                    Browse Courses
+                    Learn More
                   </Button>
                 </Link>
               </div>
@@ -359,24 +359,17 @@ export default function HomePage() {
       <section className="py-20 bg-gradient-to-r from-orange-500 to-red-600">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            Join Our Community
+            Ready to Transform Your Career?
           </h2>
           <p className="text-lg text-orange-100 mb-8 max-w-2xl mx-auto">
-            Start your journey with thousands of learners who are building their tech careers through 
-            consistency, community, and expert guidance.
+            Join thousands of learners who are building their tech careers through 
+            consistency, community, and expert guidance. Start your journey today.
           </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Link href="/auth/signup">
-              <Button size="lg" className="bg-white text-orange-600 hover:bg-gray-100 font-medium px-8">
-                Join Our Community
-              </Button>
-            </Link>
-            <Link href="/auth/signin">
-              <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-orange-600 font-medium px-8">
-                Sign In
-              </Button>
-            </Link>
-          </div>
+          <Link href="/auth/signup">
+            <Button size="lg" className="bg-white text-orange-600 hover:bg-gray-100 font-medium px-8">
+              Start Learning Today
+            </Button>
+          </Link>
         </div>
       </section>
 
