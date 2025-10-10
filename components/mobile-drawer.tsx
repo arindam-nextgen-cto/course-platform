@@ -92,10 +92,12 @@ export default function MobileDrawer({
                         >
                             <div className="flex items-center justify-between mb-4">
                                 <div className="flex items-center gap-3">
-                                    <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg flex items-center justify-center">
-                                        <span className="text-white font-bold text-sm">N</span>
-                                    </div>
-                                    <div className="text-white font-semibold">NextGen-CTO</div>
+                                    <Link href="/" className="flex items-center gap-3" onClick={() => setIsOpen(false)} aria-label="NextGen-CTO home">
+                                        <div className="w-8 h-8 bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--accent-2))] rounded-lg flex items-center justify-center">
+                                            <span className="text-white font-bold text-sm">N</span>
+                                        </div>
+                                        <div className="text-white font-semibold">NextGen-CTO</div>
+                                    </Link>
                                 </div>
                                 <button onClick={() => setIsOpen(false)} aria-label="Close menu" className="p-2 rounded-md hover:bg-white/4 close-drawer-btn">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-white">
@@ -125,7 +127,7 @@ export default function MobileDrawer({
                                     <div className="flex flex-col gap-3 pt-4">
                                         <Link href="/auth/signin" className="nav-link" onClick={() => setIsOpen(false)}>Sign In</Link>
                                         <Link href="/auth/signup" className="inline-block" onClick={() => setIsOpen(false)}>
-                                            <Button className="w-full bg-gradient-to-r from-orange-400 to-red-600 text-white">Get Started</Button>
+                                            <Button className="w-full bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--accent-2))] text-white">Get Started</Button>
                                         </Link>
                                     </div>
                                 )}

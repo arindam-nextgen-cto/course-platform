@@ -62,10 +62,10 @@ export default async function ProfilePage() {
     return 'U'
   }
 
-  const userDisplayName = userData.profile?.name || 
-                         session.user.user_metadata?.full_name || 
-                         session.user.user_metadata?.name || 
-                         'User'
+  const userDisplayName = userData.profile?.name ||
+    session.user.user_metadata?.full_name ||
+    session.user.user_metadata?.name ||
+    'User'
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -76,15 +76,15 @@ export default async function ProfilePage() {
             <CardContent className="pt-6">
               <div className="flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-6">
                 <Avatar className="h-24 w-24">
-                  <AvatarImage 
-                    src={userData.profile?.avatar || session.user.user_metadata?.avatar_url} 
+                  <AvatarImage
+                    src={userData.profile?.avatar || session.user.user_metadata?.avatar_url}
                     alt={userDisplayName}
                   />
-                  <AvatarFallback className="bg-gradient-to-br from-orange-500 to-red-600 text-white text-lg">
+                  <AvatarFallback className="bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--accent-2))] text-white text-lg">
                     {getUserInitials(userDisplayName, session.user.email)}
                   </AvatarFallback>
                 </Avatar>
-                
+
                 <div className="flex-1">
                   <h1 className="text-3xl font-bold text-gray-900 mb-2">
                     {userDisplayName}
@@ -110,7 +110,7 @@ export default async function ProfilePage() {
                     )}
                   </div>
                 </div>
-                
+
                 <Button>Edit Profile</Button>
               </div>
             </CardContent>
@@ -131,7 +131,7 @@ export default async function ProfilePage() {
                     </div>
                     <span className="font-semibold text-lg">{userData.enrollments.length}</span>
                   </div>
-                  
+
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
                       <Award className="w-5 h-5 text-green-500 mr-2" />
@@ -139,14 +139,14 @@ export default async function ProfilePage() {
                     </div>
                     <span className="font-semibold text-lg">{userData.completedLessonsCount}</span>
                   </div>
-                  
+
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
                       <Clock className="w-5 h-5 text-orange-500 mr-2" />
                       <span className="text-gray-600">Member Since</span>
                     </div>
                     <span className="font-semibold text-sm">
-                      {userData.profile?.createdAt 
+                      {userData.profile?.createdAt
                         ? new Date(userData.profile.createdAt).toLocaleDateString()
                         : 'Recently'
                       }

@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
+import { formatCurrency } from '@/lib/utils'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import Hero from '@/components/hero'
@@ -25,19 +26,19 @@ export default function HomePage() {
             <Card className="bg-gray-800 border-gray-700 hover:bg-gray-750 transition-colors">
               <CardHeader>
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full overflow-hidden">
-                    <div className="w-full h-full bg-gradient-to-br from-blue-400 to-blue-600"></div>
+                  <div className="w-12 h-12 bg-gradient-to-br from-[hsl(var(--secondary))] to-[hsl(var(--accent-2))] rounded-full overflow-hidden">
+                    <div className="w-full h-full bg-gradient-to-br from-[hsl(var(--secondary))] to-[hsl(var(--accent-2))]"></div>
                   </div>
                   <div>
                     <CardTitle className="text-white text-lg">React Mastery</CardTitle>
-                    <p className="text-gray-400 text-sm">with Sarah Chen</p>
+                    <p className="text-gray-400 text-sm">with Sakshi Sharma</p>
                   </div>
                 </div>
                 <CardDescription className="text-gray-300">
                   Master modern React patterns, hooks, and state management. Build production-ready applications.
                 </CardDescription>
                 <div className="flex items-center gap-2 mt-4">
-                  <Badge variant="secondary" className="bg-blue-900 text-blue-300">Live Cohort</Badge>
+                  <Badge variant="secondary" className="bg-[hsl(var(--secondary)/0.2)] text-[hsl(var(--secondary-foreground))]">Live Cohort</Badge>
                   <Badge variant="outline" className="border-gray-600 text-gray-400">12 weeks</Badge>
                 </div>
               </CardHeader>
@@ -51,7 +52,7 @@ export default function HomePage() {
                   </div>
                   <div>
                     <CardTitle className="text-white text-lg">Python & AI</CardTitle>
-                    <p className="text-gray-400 text-sm">with Dr. Alex Kumar</p>
+                    <p className="text-gray-400 text-sm">with Dr. Arjun Kumar</p>
                   </div>
                 </div>
                 <CardDescription className="text-gray-300">
@@ -72,7 +73,7 @@ export default function HomePage() {
                   </div>
                   <div>
                     <CardTitle className="text-white text-lg">DevOps Pro</CardTitle>
-                    <p className="text-gray-400 text-sm">with Mike Rodriguez</p>
+                    <p className="text-gray-400 text-sm">with Manish Reddy</p>
                   </div>
                 </div>
                 <CardDescription className="text-gray-300">
@@ -91,50 +92,154 @@ export default function HomePage() {
       {/* Instructors Section */}
       <section className="py-20 bg-black">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Our Experts
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">
+              Mentor Connect
             </h2>
-            <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-              Learn from industry veterans who've built products at top tech companies and are passionate about teaching.
+            <p className="text-lg text-gray-400 max-w-3xl mx-auto">
+              Get personalized direction from seasoned mentors — mentor-crafted roadmaps to guide your journey and on-demand 1:1 sessions to unblock progress fast.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="w-24 h-24 bg-gradient-to-br from-orange-500 to-red-600 rounded-full mx-auto mb-4 overflow-hidden">
-                <div className="w-full h-full bg-gradient-to-br from-orange-400 to-red-600"></div>
-              </div>
-              <h3 className="text-white font-semibold mb-1">Sarah Chen</h3>
-              <p className="text-gray-400 text-sm mb-2">Ex-Meta, Google</p>
-              <p className="text-gray-500 text-xs">React & Frontend</p>
+          <div className="grid md:grid-cols-3 gap-8 items-start">
+            {/* Feature / CTA Column */}
+            <div className="md:col-span-1">
+              <Card className="bg-gradient-to-br from-[hsl(var(--primary))/0.06] to-[hsl(var(--accent-2))/0.04] border border-gray-800 p-6 hover:shadow-lg transition-shadow">
+                <CardHeader>
+                  <CardTitle className="text-white text-2xl mb-2">Roadmaps & 1:1 Guidance</CardTitle>
+                  <CardDescription className="text-gray-300 mb-4">
+                    Choose a mentor roadmap tailored to your goal — from job-ready engineering tracks to domain-specialized deep dives. Book short, actionable 1:1 sessions on demand.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-3 mb-6">
+                    <li className="flex items-start gap-3">
+                      <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[hsl(var(--primary))] text-white font-semibold">R</span>
+                      <div className="text-sm text-gray-300">Roadmaps crafted by mentors — mapped to hiring outcomes.</div>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[hsl(var(--secondary))] text-white font-semibold">1:1</span>
+                      <div className="text-sm text-gray-300">On-demand 1:1 sessions — focused, actionable, and time-boxed.</div>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-indigo-600 text-white font-semibold">P</span>
+                      <div className="text-sm text-gray-300">Practical project feedback and interview-ready guidance.</div>
+                    </li>
+                  </ul>
+
+                  <div className="flex gap-3">
+                    <Link href="/mentors">
+                      <Button className="bg-white !text-primary hover:opacity-95">Explore Roadmaps</Button>
+                    </Link>
+                    <Link href="/auth/signin">
+                      <Button variant="outline" className="border-gray-600 text-gray-300">Book 1:1</Button>
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
 
-            <div className="text-center">
-              <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full mx-auto mb-4 overflow-hidden">
-                <div className="w-full h-full bg-gradient-to-br from-blue-400 to-blue-600"></div>
-              </div>
-              <h3 className="text-white font-semibold mb-1">Dr. Alex Kumar</h3>
-              <p className="text-gray-400 text-sm mb-2">Ex-OpenAI, Tesla</p>
-              <p className="text-gray-500 text-xs">AI & Machine Learning</p>
-            </div>
+            {/* Mentor Cards */}
+            <div className="md:col-span-2 grid sm:grid-cols-2 gap-6">
+              <Card className="bg-gray-900 border-gray-800 hover:scale-[1.02] transform-gpu transition-transform">
+                <CardHeader>
+                  <div className="flex items-center gap-4">
+                    <div className="w-16 h-16 bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--accent-2))] rounded-full overflow-hidden"></div>
+                    <div>
+                      <h3 className="text-white font-semibold">Sakshi Sharma</h3>
+                      <p className="text-gray-400 text-sm">Ex-Meta, Google • React & Frontend</p>
+                    </div>
+                    <div className="ml-auto flex gap-2">
+                      <Badge className="bg-[hsl(var(--primary))] text-white">Roadmaps</Badge>
+                      <Badge variant="secondary" className="bg-[hsl(var(--secondary))/0.12] text-[hsl(var(--secondary-foreground))]">1:1</Badge>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-300 text-sm mb-4">Crafts frontend roadmaps focused on building production apps and interview portfolios. Quick hands-on reviews and UI deep-dives.</p>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-gray-400">Sessions from 30 mins</span>
+                    <Link href="/auth/signin">
+                      <Button size="sm" className="bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--accent-2))]">Book</Button>
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
 
-            <div className="text-center">
-              <div className="w-24 h-24 bg-gradient-to-br from-green-500 to-green-600 rounded-full mx-auto mb-4 overflow-hidden">
-                <div className="w-full h-full bg-gradient-to-br from-green-400 to-green-600"></div>
-              </div>
-              <h3 className="text-white font-semibold mb-1">Mike Rodriguez</h3>
-              <p className="text-gray-400 text-sm mb-2">Ex-AWS, Netflix</p>
-              <p className="text-gray-500 text-xs">DevOps & Cloud</p>
-            </div>
+              <Card className="bg-gray-900 border-gray-800 hover:scale-[1.02] transform-gpu transition-transform">
+                <CardHeader>
+                  <div className="flex items-center gap-4">
+                    <div className="w-16 h-16 bg-gradient-to-br from-[hsl(var(--secondary))] to-[hsl(var(--accent-2))] rounded-full overflow-hidden"></div>
+                    <div>
+                      <h3 className="text-white font-semibold">Dr. Arjun Kumar</h3>
+                      <p className="text-gray-400 text-sm">Ex-OpenAI, Tesla • AI & ML</p>
+                    </div>
+                    <div className="ml-auto flex gap-2">
+                      <Badge className="bg-indigo-700 text-white">Roadmaps</Badge>
+                      <Badge variant="outline" className="border-gray-700 text-gray-300">1:1</Badge>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-300 text-sm mb-4">Designs ML learning tracks that map to practical projects and hiring signals. Available for detailed model reviews and architecture sessions.</p>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-gray-400">Available for office hours</span>
+                    <Link href="/auth/signin">
+                      <Button size="sm" className="bg-gradient-to-r from-[hsl(var(--secondary))] to-[hsl(var(--accent-2))]">Book</Button>
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
 
-            <div className="text-center">
-              <div className="w-24 h-24 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full mx-auto mb-4 overflow-hidden">
-                <div className="w-full h-full bg-gradient-to-br from-purple-400 to-purple-600"></div>
-              </div>
-              <h3 className="text-white font-semibold mb-1">Lisa Park</h3>
-              <p className="text-gray-400 text-sm mb-2">Ex-Stripe, Uber</p>
-              <p className="text-gray-500 text-xs">Backend & Systems</p>
+              <Card className="bg-gray-900 border-gray-800 hover:scale-[1.02] transform-gpu transition-transform">
+                <CardHeader>
+                  <div className="flex items-center gap-4">
+                    <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-full overflow-hidden"></div>
+                    <div>
+                      <h3 className="text-white font-semibold">Manish Reddy</h3>
+                      <p className="text-gray-400 text-sm">Ex-AWS, Netflix • DevOps</p>
+                    </div>
+                    <div className="ml-auto flex gap-2">
+                      <Badge className="bg-green-700 text-white">Roadmaps</Badge>
+                      <Badge variant="outline" className="border-gray-700 text-gray-300">1:1</Badge>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-300 text-sm mb-4">Infrastructure and SRE roadmaps that prepare you for scaling systems and operational excellence. Offers architecture reviews and incident postmortems.</p>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-gray-400">Hands-on workshops</span>
+                    <Link href="/auth/signin">
+                      <Button size="sm" className="bg-gradient-to-r from-green-500 to-green-600">Book</Button>
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-gray-900 border-gray-800 hover:scale-[1.02] transform-gpu transition-transform">
+                <CardHeader>
+                  <div className="flex items-center gap-4">
+                    <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full overflow-hidden"></div>
+                    <div>
+                      <h3 className="text-white font-semibold">Priya Nair</h3>
+                      <p className="text-gray-400 text-sm">Ex-Stripe, Uber • Backend</p>
+                    </div>
+                    <div className="ml-auto flex gap-2">
+                      <Badge className="bg-purple-700 text-white">Roadmaps</Badge>
+                      <Badge variant="outline" className="border-gray-700 text-gray-300">1:1</Badge>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-300 text-sm mb-4">Backend system design and architecture roadmaps, plus interview coaching for systems-level roles.</p>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-gray-400">System design focus</span>
+                    <Link href="/auth/signin">
+                      <Button size="sm" className="bg-gradient-to-r from-purple-500 to-purple-600">Book</Button>
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </div>
@@ -153,11 +258,11 @@ export default function HomePage() {
           </div>
 
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <Card className="bg-gradient-to-br from-orange-900/20 to-red-900/20 border-orange-800/30 hover:border-orange-700/50 transition-colors">
+            <Card className="bg-gradient-to-br from-[hsl(var(--primary))/0.22] to-[hsl(var(--accent-2))/0.22] border-[hsl(var(--primary))/0.3] hover:border-[hsl(var(--primary))/0.4] transition-colors">
               <CardHeader>
                 <div className="flex items-center justify-between mb-4">
-                  <Badge className="bg-orange-500 text-white">CONCEPT</Badge>
-                  <span className="text-orange-400 text-sm font-medium">12 weeks</span>
+                  <Badge className="bg-[hsl(var(--primary))] text-white">CONCEPT</Badge>
+                  <span className="text-[hsl(var(--primary))/0.85] text-sm font-medium">12 weeks</span>
                 </div>
                 <CardTitle className="text-white text-2xl mb-2">Full-Stack Development</CardTitle>
                 <CardDescription className="text-gray-300 mb-4">
@@ -184,19 +289,19 @@ export default function HomePage() {
               </CardHeader>
               <CardContent>
                 <div className="flex justify-between items-center">
-                  <span className="text-2xl font-bold text-white">$2,499</span>
-                  <Button className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700">
+                  <span className="text-2xl font-bold text-white">{formatCurrency(2499)}</span>
+                  <Button className="bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--accent-2))] hover:opacity-95">
                     Start Path
                   </Button>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-gradient-to-br from-blue-900/20 to-purple-900/20 border-blue-800/30 hover:border-blue-700/50 transition-colors">
+            <Card className="bg-gradient-to-br from-[hsl(var(--secondary))/0.22] to-[hsl(var(--accent-2))/0.22] border-[hsl(var(--secondary))/0.3] hover:border-[hsl(var(--secondary))/0.4] transition-colors">
               <CardHeader>
                 <div className="flex items-center justify-between mb-4">
-                  <Badge className="bg-blue-500 text-white">CONCEPT</Badge>
-                  <span className="text-blue-400 text-sm font-medium">10 weeks</span>
+                  <Badge className="bg-[hsl(var(--secondary))] text-white">CONCEPT</Badge>
+                  <span className="text-[hsl(var(--secondary))/0.85] text-sm font-medium">10 weeks</span>
                 </div>
                 <CardTitle className="text-white text-2xl mb-2">AI & Machine Learning</CardTitle>
                 <CardDescription className="text-gray-300 mb-4">
@@ -223,8 +328,8 @@ export default function HomePage() {
               </CardHeader>
               <CardContent>
                 <div className="flex justify-between items-center">
-                  <span className="text-2xl font-bold text-white">$2,199</span>
-                  <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700">
+                  <span className="text-2xl font-bold text-white">{formatCurrency(2199)}</span>
+                  <Button className="bg-gradient-to-r from-[hsl(var(--secondary))] to-[hsl(var(--accent-2))] hover:opacity-95">
                     Start Path
                   </Button>
                 </div>
@@ -293,17 +398,17 @@ export default function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-orange-500 to-red-600">
+      <section className="py-20 bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--accent-2))]">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
             Ready to Transform Your Career?
           </h2>
-          <p className="text-lg text-orange-100 mb-8 max-w-2xl mx-auto">
+          <p className="text-lg text-[hsl(var(--primary-foreground))/0.85] mb-8 max-w-2xl mx-auto">
             Join thousands of learners who are building their tech careers through
             consistency, community, and expert guidance. Start your journey today.
           </p>
           <Link href="/auth/signup">
-            <Button size="lg" className="bg-white text-orange-600 hover:bg-gray-100 font-medium px-8">
+            <Button size="lg" className="bg-white !text-primary hover:bg-gray-100 font-medium px-8">
               Start Learning Today
             </Button>
           </Link>

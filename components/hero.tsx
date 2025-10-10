@@ -32,7 +32,7 @@ export default function Hero() {
                                 </Button>
                             </Link>
                             <Link href="/auth/signup">
-                                <Button variant="outline" size="lg" className="font-medium px-8 border-gray-600 text-gray-300 hover:bg-[color:var(--glass)]">
+                                <Button variant="outline" size="lg" className="font-medium px-8 border-gray-600 !text-gray-300 hover:bg-[color:var(--glass)] hover:!text-white">
                                     Get Started — Free
                                 </Button>
                             </Link>

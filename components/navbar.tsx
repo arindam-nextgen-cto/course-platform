@@ -88,8 +88,8 @@ export default function Navbar({ initialSession }: { initialSession: Session | n
                 <div className="container mx-auto px-4 py-3 flex justify-between items-center relative">
                     {/* Logo */}
                     <div className="flex items-center space-x-4">
-                        <Link href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
-                            <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg flex items-center justify-center">
+                        <Link href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity" aria-label="NextGen-CTO home">
+                            <div className="w-8 h-8 bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--accent-2))] rounded-lg flex items-center justify-center cursor-pointer" aria-hidden>
                                 <span className="text-white font-bold text-sm">N</span>
                             </div>
                             <h1 className="text-xl font-bold text-white">NextGen-CTO</h1>
@@ -132,7 +132,7 @@ export default function Navbar({ initialSession }: { initialSession: Session | n
                                                 src={session.user.user_metadata?.avatar_url}
                                                 alt={session.user.user_metadata?.full_name || session.user.email || 'User'}
                                             />
-                                            <AvatarFallback className="bg-gradient-to-br from-orange-500 to-red-600 text-white">
+                                            <AvatarFallback className="bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--accent-2))] text-white">
                                                 {getUserInitials(
                                                     session.user.user_metadata?.full_name || session.user.user_metadata?.name,
                                                     session.user.email
@@ -196,7 +196,7 @@ export default function Navbar({ initialSession }: { initialSession: Session | n
                                     </Button>
                                 </Link>
                                 <Link href="/auth/signup" className="hidden md:inline-flex">
-                                    <Button className="bg-gradient-to-r from-orange-400 to-red-600 text-white font-medium shadow-md hover:shadow-lg transform-gpu transition-shadow duration-200">
+                                    <Button className="bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--accent-2))] text-white font-medium shadow-md hover:shadow-lg transform-gpu transition-shadow duration-200">
                                         Get Started
                                     </Button>
                                 </Link>

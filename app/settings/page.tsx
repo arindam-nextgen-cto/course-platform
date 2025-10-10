@@ -5,12 +5,12 @@ import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
-import { 
-  User, 
-  Bell, 
-  Shield, 
-  CreditCard, 
-  Download, 
+import {
+  User,
+  Bell,
+  Shield,
+  CreditCard,
+  Download,
   Trash2,
   ExternalLink,
   Settings as SettingsIcon
@@ -43,10 +43,10 @@ export default async function SettingsPage() {
     return 'U'
   }
 
-  const userDisplayName = profile?.name || 
-                         session.user.user_metadata?.full_name || 
-                         session.user.user_metadata?.name || 
-                         'User'
+  const userDisplayName = profile?.name ||
+    session.user.user_metadata?.full_name ||
+    session.user.user_metadata?.name ||
+    'User'
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -101,11 +101,11 @@ export default async function SettingsPage() {
                 <CardContent className="space-y-6">
                   <div className="flex items-center space-x-4">
                     <Avatar className="h-20 w-20">
-                      <AvatarImage 
-                        src={profile?.avatar || session.user.user_metadata?.avatar_url} 
+                      <AvatarImage
+                        src={profile?.avatar || session.user.user_metadata?.avatar_url}
                         alt={userDisplayName}
                       />
-                      <AvatarFallback className="bg-gradient-to-br from-orange-500 to-red-600 text-white text-lg">
+                      <AvatarFallback className="bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--accent-2))] text-white text-lg">
                         {getUserInitials(userDisplayName, session.user.email)}
                       </AvatarFallback>
                     </Avatar>
@@ -169,9 +169,9 @@ export default async function SettingsPage() {
                       </div>
                       <Button variant="outline" size="sm">Configure</Button>
                     </div>
-                    
+
                     <Separator />
-                    
+
                     <div className="flex items-center justify-between">
                       <div>
                         <h4 className="text-sm font-medium">Live Sessions</h4>
@@ -179,9 +179,9 @@ export default async function SettingsPage() {
                       </div>
                       <Button variant="outline" size="sm">Configure</Button>
                     </div>
-                    
+
                     <Separator />
-                    
+
                     <div className="flex items-center justify-between">
                       <div>
                         <h4 className="text-sm font-medium">Community</h4>
@@ -218,9 +218,9 @@ export default async function SettingsPage() {
                         Manage
                       </Button>
                     </div>
-                    
+
                     <Separator />
-                    
+
                     <div className="flex items-center justify-between">
                       <div>
                         <h4 className="text-sm font-medium">Privacy Settings</h4>
@@ -228,9 +228,9 @@ export default async function SettingsPage() {
                       </div>
                       <Button variant="outline" size="sm">Configure</Button>
                     </div>
-                    
+
                     <Separator />
-                    
+
                     <div className="flex items-center justify-between">
                       <div>
                         <h4 className="text-sm font-medium">Data Export</h4>

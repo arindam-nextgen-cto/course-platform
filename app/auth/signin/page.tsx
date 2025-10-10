@@ -30,7 +30,7 @@ export default function SignInPage() {
   const handleOAuthSignIn = async (provider: 'google' | 'github') => {
     setLoading(true)
     setError(null)
-    
+
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
@@ -56,14 +56,14 @@ export default function SignInPage() {
             <ArrowLeft className="w-4 h-4" />
             <span>Back to home</span>
           </Link>
-          
+
           <div className="flex items-center justify-center space-x-2 mb-6">
-            <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg flex items-center justify-center">
+            <div className="w-10 h-10 bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--accent-2))] rounded-lg flex items-center justify-center">
               <span className="text-white font-bold">N</span>
             </div>
             <h1 className="text-2xl font-bold text-white">NextGen-CTO</h1>
           </div>
-          
+
           <h2 className="text-3xl font-bold text-white mb-2">
             Welcome back
           </h2>
@@ -136,7 +136,7 @@ export default function SignInPage() {
               Sign up for free
             </Link>
           </p>
-          
+
           <p className="text-xs text-gray-500">
             By signing in, you agree to our{' '}
             <Link href="/terms" className="text-orange-400 hover:text-orange-300 transition-colors">

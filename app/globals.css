@@ -11,11 +11,13 @@
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-    /* Primary brand color — leaning teal/cyan similar to Chaicode accents */
-    --primary: 187 90% 43%;
+    /* Primary brand color — unify to the warm/orange brand used in the header */
+    --primary: 18 90% 55%;
+    /* orange */
     --primary-foreground: 210 40% 98%;
-    /* Secondary / warm accent (keep some of original identity) */
-    --secondary: 18 90% 55%;
+    /* Secondary / complementary accent (keep contrast for variety) */
+    --secondary: 187 90% 43%;
+    /* teal as secondary */
     --secondary-foreground: 222.2 84% 4.9%;
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215.4 16.3% 46.9%;
@@ -26,7 +28,9 @@
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 221.2 83.2% 53.3%;
-    --accent-2: 225 85% 52%;
+    /* stronger warm-to-warm accent for gradients */
+    --accent-2: 5 85% 45%;
+    /* deep red-ish to pair with orange */
     --glass: 220 12% 12%;
     --radius: 0.5rem;
   }
@@ -38,9 +42,10 @@
     --card-foreground: 210 40% 98%;
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-    --primary: 187 90% 43%;
+    /* dark theme: primary should also be the warm brand color */
+    --primary: 18 90% 55%;
     --primary-foreground: 222.2 84% 4.9%;
-    --secondary: 18 90% 55%;
+    --secondary: 187 90% 43%;
     --secondary-foreground: 210 40% 98%;
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
@@ -51,7 +56,7 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 224.3 76.3% 94.1%;
-    --accent-2: 225 85% 52%;
+    --accent-2: 5 85% 45%;
     --glass: 222 14% 10%;
   }
 }
@@ -126,7 +131,8 @@
 /* Mobile-optimized crop: shift focus slightly up on small screens and hide the decorative gradient */
 @media (max-width: 639px) {
   .hero-image {
-    object-position: 50% 18%; /* focus the upper portion of the mockup on phones */
+    object-position: 50% 18%;
+    /* focus the upper portion of the mockup on phones */
     transform: scale(1.05);
   }
 
