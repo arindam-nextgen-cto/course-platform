@@ -20,6 +20,7 @@ import type { Session } from '@supabase/supabase-js'
 export default function Navbar({ initialSession }: { initialSession: Session | null }) {
   const [session, setSession] = useState<Session | null>(initialSession)
   const [loading, setLoading] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
   const supabase = createClientSupabaseClient()
   const router = useRouter()
 
@@ -34,6 +35,13 @@ export default function Navbar({ initialSession }: { initialSession: Session | n
       subscription?.unsubscribe()
     }
   }, [supabase])
+
+  useEffect(() => {
+    const onScroll = () => setIsScrolled(window.scrollY > 6)
+    onScroll()
+    window.addEventListener('scroll', onScroll)
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   const handleSignOut = async () => {
     setLoading(true)
@@ -59,9 +67,13 @@ export default function Navbar({ initialSession }: { initialSession: Session | n
     return 'U'
   }
 
+  const headerClass = isScrolled
+    ? 'sticky top-0 z-50 bg-black/95 border-b border-gray-800 shadow-lg transition-all duration-200'
+    : 'sticky top-0 z-50 bg-[#05060a] border-b border-gray-900 transition-all duration-200'
+
   return (
-    <header className="sticky top-0 z-50 border-b border-gray-800 bg-black/95 backdrop-blur supports-[backdrop-filter]:bg-black/60">
-      <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+    <header className={headerClass}>
+      <div className="container mx-auto px-4 py-3 flex justify-between items-center relative">
         {/* Logo */}
         <div className="flex items-center space-x-4">
           <Link href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
@@ -76,20 +88,20 @@ export default function Navbar({ initialSession }: { initialSession: Session | n
           </div>
         </div>
 
-        {/* Navigation */}
-        <nav className="hidden md:flex items-center space-x-8">
-          <Link href="/courses" className="text-gray-300 hover:text-white font-medium transition-colors">
+        {/* Navigation (centered on wide screens) */}
+        <nav className="hidden md:flex absolute inset-x-0 h-full items-center justify-center space-x-10">
+          <Link href="/courses" className="nav-link">
             Courses
           </Link>
           {session && (
-            <Link href="/dashboard" className="text-gray-300 hover:text-white font-medium transition-colors">
+            <Link href="/dashboard" className="nav-link">
               Dashboard
             </Link>
           )}
-          <Link href="/about" className="text-gray-300 hover:text-white font-medium transition-colors">
+          <Link href="/about" className="nav-link">
             About
           </Link>
-          <Link href="/pricing" className="text-gray-300 hover:text-white font-medium transition-colors">
+          <Link href="/pricing" className="nav-link">
             Pricing
           </Link>
         </nav>
@@ -169,7 +181,7 @@ export default function Navbar({ initialSession }: { initialSession: Session | n
                 </Button>
               </Link>
               <Link href="/auth/signup">
-                <Button className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 font-medium">
+                <Button className="bg-gradient-to-r from-orange-400 to-red-600 text-white font-medium shadow-md hover:shadow-lg transform-gpu transition-shadow duration-200">
                   Get Started
                 </Button>
               </Link>
