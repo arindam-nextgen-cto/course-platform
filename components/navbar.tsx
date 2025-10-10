@@ -209,12 +209,12 @@ export default function Navbar({ initialSession }: { initialSession: Session | n
             </DropdownMenu>
           ) : (
             <>
-              <Link href="/auth/signin">
+              <Link href="/auth/signin" className="hidden md:inline-flex">
                 <Button variant="ghost" className="font-medium text-white hover:bg-gray-800">
                   Sign In
                 </Button>
               </Link>
-              <Link href="/auth/signup">
+              <Link href="/auth/signup" className="hidden md:inline-flex">
                 <Button className="bg-gradient-to-r from-orange-400 to-red-600 text-white font-medium shadow-md hover:shadow-lg transform-gpu transition-shadow duration-200">
                   Get Started
                 </Button>
@@ -232,7 +232,7 @@ export default function Navbar({ initialSession }: { initialSession: Session | n
         aria-hidden={!isOpen}
       >
         <div className="mobile-drawer-backdrop" onClick={() => setIsOpen(false)} />
-        <div className="mobile-drawer-panel container mx-auto px-4 py-6">
+        <div className="mobile-drawer-panel px-4 py-6">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg flex items-center justify-center">

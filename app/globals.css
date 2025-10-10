@@ -279,9 +279,13 @@
   transform: translateY(-8%);
   opacity: 0;
   transition: transform 320ms cubic-bezier(.2,.9,.2,1), opacity 220ms ease;
-  width: calc(100% - 32px); /* full width with small side gutters */
-  margin-left: 16px;
-  margin-right: 16px;
+  width: 100%;
+  margin: 0; /* full-bleed on small screens */
+  left: 0;
+  right: 0;
+  box-sizing: border-box;
+  padding-left: env(safe-area-inset-left, 16px);
+  padding-right: env(safe-area-inset-right, 16px);
 }
 .mobile-drawer.open .mobile-drawer-backdrop {
   opacity: 1;
