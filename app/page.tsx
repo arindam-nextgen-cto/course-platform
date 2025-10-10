@@ -20,7 +20,7 @@ export default function HomePage() {
               Discover what's hot in our learning community. Join the most popular cohorts and trending discussions.
             </p>
           </div>
-          
+
           <div className="grid md:grid-cols-3 gap-8">
             <Card className="bg-gray-800 border-gray-700 hover:bg-gray-750 transition-colors">
               <CardHeader>
@@ -42,7 +42,7 @@ export default function HomePage() {
                 </div>
               </CardHeader>
             </Card>
-            
+
             <Card className="bg-gray-800 border-gray-700 hover:bg-gray-750 transition-colors">
               <CardHeader>
                 <div className="flex items-center gap-3 mb-4">
@@ -63,7 +63,7 @@ export default function HomePage() {
                 </div>
               </CardHeader>
             </Card>
-            
+
             <Card className="bg-gray-800 border-gray-700 hover:bg-gray-750 transition-colors">
               <CardHeader>
                 <div className="flex items-center gap-3 mb-4">
@@ -99,7 +99,7 @@ export default function HomePage() {
               Learn from industry veterans who've built products at top tech companies and are passionate about teaching.
             </p>
           </div>
-          
+
           <div className="grid md:grid-cols-4 gap-8">
             <div className="text-center">
               <div className="w-24 h-24 bg-gradient-to-br from-orange-500 to-red-600 rounded-full mx-auto mb-4 overflow-hidden">
@@ -109,7 +109,7 @@ export default function HomePage() {
               <p className="text-gray-400 text-sm mb-2">Ex-Meta, Google</p>
               <p className="text-gray-500 text-xs">React & Frontend</p>
             </div>
-            
+
             <div className="text-center">
               <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full mx-auto mb-4 overflow-hidden">
                 <div className="w-full h-full bg-gradient-to-br from-blue-400 to-blue-600"></div>
@@ -118,7 +118,7 @@ export default function HomePage() {
               <p className="text-gray-400 text-sm mb-2">Ex-OpenAI, Tesla</p>
               <p className="text-gray-500 text-xs">AI & Machine Learning</p>
             </div>
-            
+
             <div className="text-center">
               <div className="w-24 h-24 bg-gradient-to-br from-green-500 to-green-600 rounded-full mx-auto mb-4 overflow-hidden">
                 <div className="w-full h-full bg-gradient-to-br from-green-400 to-green-600"></div>
@@ -127,7 +127,7 @@ export default function HomePage() {
               <p className="text-gray-400 text-sm mb-2">Ex-AWS, Netflix</p>
               <p className="text-gray-500 text-xs">DevOps & Cloud</p>
             </div>
-            
+
             <div className="text-center">
               <div className="w-24 h-24 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full mx-auto mb-4 overflow-hidden">
                 <div className="w-full h-full bg-gradient-to-br from-purple-400 to-purple-600"></div>
@@ -151,7 +151,7 @@ export default function HomePage() {
               Structured learning journeys designed to take you from beginner to job-ready professional.
             </p>
           </div>
-          
+
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <Card className="bg-gradient-to-br from-orange-900/20 to-red-900/20 border-orange-800/30 hover:border-orange-700/50 transition-colors">
               <CardHeader>
@@ -191,7 +191,7 @@ export default function HomePage() {
                 </div>
               </CardContent>
             </Card>
-            
+
             <Card className="bg-gradient-to-br from-blue-900/20 to-purple-900/20 border-blue-800/30 hover:border-blue-700/50 transition-colors">
               <CardHeader>
                 <div className="flex items-center justify-between mb-4">
@@ -231,7 +231,7 @@ export default function HomePage() {
               </CardContent>
             </Card>
           </div>
-          
+
           <div className="text-center mt-12">
             <Link href="/courses">
               <Button variant="outline" size="lg" className="font-medium border-gray-600 text-gray-300 hover:bg-gray-800">
@@ -253,7 +253,7 @@ export default function HomePage() {
               Real stories from our community members who transformed their careers through consistent learning.
             </p>
           </div>
-          
+
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <Card className="bg-gray-900 border-gray-800">
               <CardHeader>
@@ -265,13 +265,13 @@ export default function HomePage() {
                   </div>
                 </div>
                 <CardDescription className="text-gray-300">
-                  "The consistency and community at NextGen-CTO changed everything for me. 
-                  From zero coding experience to landing my dream job at Google in 8 months. 
+                  "The consistency and community at NextGen-CTO changed everything for me.
+                  From zero coding experience to landing my dream job at Google in 8 months.
                   The live cohorts kept me accountable and motivated."
                 </CardDescription>
               </CardHeader>
             </Card>
-            
+
             <Card className="bg-gray-900 border-gray-800">
               <CardHeader>
                 <div className="flex items-center gap-3 mb-4">
@@ -282,8 +282,8 @@ export default function HomePage() {
                   </div>
                 </div>
                 <CardDescription className="text-gray-300">
-                  "The AI cohort was incredible. Learning alongside peers who were equally passionate 
-                  made all the difference. The projects we built were portfolio-worthy and helped me 
+                  "The AI cohort was incredible. Learning alongside peers who were equally passionate
+                  made all the difference. The projects we built were portfolio-worthy and helped me
                   transition from finance to AI engineering."
                 </CardDescription>
               </CardHeader>
@@ -299,7 +299,7 @@ export default function HomePage() {
             Ready to Transform Your Career?
           </h2>
           <p className="text-lg text-orange-100 mb-8 max-w-2xl mx-auto">
-            Join thousands of learners who are building their tech careers through 
+            Join thousands of learners who are building their tech careers through
             consistency, community, and expert guidance. Start your journey today.
           </p>
           <Link href="/auth/signup">
@@ -322,7 +322,7 @@ export default function HomePage() {
                 <h4 className="text-xl font-bold">NextGen-CTO</h4>
               </div>
               <p className="text-gray-400 mb-4 max-w-md">
-                Building the future of tech education through consistency, community, and expert mentorship. 
+                Building the future of tech education through consistency, community, and expert mentorship.
                 Join thousands of learners transforming their careers.
               </p>
               <div className="flex space-x-4">
@@ -332,7 +332,7 @@ export default function HomePage() {
                 <a href="#" className="text-gray-500 hover:text-orange-400 transition-colors">Discord</a>
               </div>
             </div>
-            
+
             <div>
               <h4 className="text-lg font-semibold mb-4 text-white">Learning</h4>
               <ul className="space-y-2 text-gray-400">
@@ -342,7 +342,7 @@ export default function HomePage() {
                 <li><Link href="/projects" className="hover:text-orange-400 transition-colors">Projects</Link></li>
               </ul>
             </div>
-            
+
             <div>
               <h4 className="text-lg font-semibold mb-4 text-white">Community</h4>
               <ul className="space-y-2 text-gray-400">
@@ -352,7 +352,7 @@ export default function HomePage() {
                 <li><Link href="/success-stories" className="hover:text-orange-400 transition-colors">Success Stories</Link></li>
               </ul>
             </div>
-            
+
             <div>
               <h4 className="text-lg font-semibold mb-4 text-white">Company</h4>
               <ul className="space-y-2 text-gray-400">
@@ -363,7 +363,7 @@ export default function HomePage() {
               </ul>
             </div>
           </div>
-          
+
           <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-500 text-sm">
               &copy; 2024 NextGen-CTO. All rights reserved.
