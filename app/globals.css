@@ -251,6 +251,12 @@
   position: fixed;
   inset: 0;
   z-index: 60;
+  pointer-events: none; /* default: ignore pointer events when closed */
+}
+.mobile-drawer.open {
+  pointer-events: auto; /* allow interactions when open */
+}
+.mobile-drawer.closed {
   pointer-events: none;
 }
 .mobile-drawer-backdrop {
@@ -273,6 +279,9 @@
   transform: translateY(-8%);
   opacity: 0;
   transition: transform 320ms cubic-bezier(.2,.9,.2,1), opacity 220ms ease;
+  width: calc(100% - 32px); /* full width with small side gutters */
+  margin-left: 16px;
+  margin-right: 16px;
 }
 .mobile-drawer.open .mobile-drawer-backdrop {
   opacity: 1;
