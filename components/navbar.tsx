@@ -88,7 +88,7 @@ export default function Navbar({ initialSession }: { initialSession: Session | n
     return (
         <>
             <header className={headerClass}>
-                <div className="container mx-auto px-4 py-3 grid grid-cols-3 items-center relative">
+                <div className="container mx-auto px-4 py-3 grid grid-cols-2 md:grid-cols-3 items-center relative">
                     {/* Logo */}
                     <div className="flex items-center space-x-4 col-span-1 z-20">
                         <Link href="/" aria-label="NextGen-CTO home" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
