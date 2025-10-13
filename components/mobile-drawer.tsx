@@ -54,9 +54,9 @@ export default function MobileDrawer({
                         onClick={() => setIsOpen(s => !s)}
                         aria-expanded={isOpen}
                         aria-label={isOpen ? 'Close menu' : 'Open menu'}
-                        className={`md:hidden p-2 rounded-md hover:bg-white/3 transition-colors mobile-hamburger`}
+                        className={`md:hidden p-2 rounded-md hover:bg-accent/8 transition-colors mobile-hamburger`}
                     >
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-white">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-foreground">
                             <path d={isOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16M4 18h16'} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                     </button>
@@ -94,13 +94,13 @@ export default function MobileDrawer({
                                 <div className="flex items-center gap-3">
                                     <Link href="/" className="flex items-center gap-3" onClick={() => setIsOpen(false)} aria-label="NextGen-CTO home">
                                         <div className="w-8 h-8 bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--accent-2))] rounded-lg flex items-center justify-center">
-                                            <span className="text-white font-bold text-sm">N</span>
+                                            <span className="text-primary-foreground font-bold text-sm">N</span>
                                         </div>
-                                        <div className="text-white font-semibold">NextGen-CTO</div>
+                                        <div className="text-foreground font-semibold">NextGen-CTO</div>
                                     </Link>
                                 </div>
-                                <button onClick={() => setIsOpen(false)} aria-label="Close menu" className="p-2 rounded-md hover:bg-white/4 close-drawer-btn">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-white">
+                                <button onClick={() => setIsOpen(false)} aria-label="Close menu" className="p-2 rounded-md hover:bg-accent/8 close-drawer-btn">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-foreground">
                                         <path d="M6 18L18 6M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                     </svg>
                                 </button>
@@ -127,7 +127,7 @@ export default function MobileDrawer({
                                     <div className="flex flex-col gap-3 pt-4">
                                         <Link href="/auth/signin" className="nav-link" onClick={() => setIsOpen(false)} aria-current={currentPathname?.startsWith('/auth/signin') ? 'page' : undefined}>Sign In</Link>
                                         <Button asChild className="w-full">
-                                            <Link href="/auth/signup" onClick={() => setIsOpen(false)} className="w-full bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--accent-2))] text-white inline-flex items-center justify-center py-2 rounded-md">Get Started</Link>
+                                            <Link href="/auth/signup" onClick={() => setIsOpen(false)} className="w-full bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--accent-2))] text-primary-foreground inline-flex items-center justify-center py-2 rounded-md">Get Started</Link>
                                         </Button>
                                     </div>
                                 )}

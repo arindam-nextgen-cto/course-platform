@@ -114,25 +114,20 @@ export default async function DashboardPage() {
     redirect('/auth/signin')
   }
 
-  const upcomingSessions = userData.enrollments.flatMap((enrollment: any) =>
-    enrollment.cohort.liveSessions.map((session: any) => ({
-      ...session,
-      cohortName: enrollment.cohort.name,
-      courseName: enrollment.cohort.course.title
+  const upcomingSessions = (userData.enrollments || []).flatMap((enrollment: any) =>
+    (enrollment.cohort?.liveSessions || []).map((ls: any) => ({
+      ...ls,
+      cohortName: enrollment.cohort?.name,
+      courseName: enrollment.cohort?.course?.title,
     }))
   ).sort((a: any, b: any) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime())
 
   return (
-    <div className="min-h-screen bg-gray-50">
-
+    <div className="min-h-screen bg-background text-foreground">
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            Welcome back, {userData.name || 'Student'}!
-          </h1>
-          <p className="text-xl text-gray-600">
-            Continue your learning journey
-          </p>
+          <h1 className="text-4xl font-bold text-foreground mb-2">Welcome back, {userData.name || 'Student'}!</h1>
+          <p className="text-xl text-muted-foreground">Continue your learning journey</p>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-6">
@@ -149,7 +144,7 @@ export default async function DashboardPage() {
               <CardContent>
                 {userData.enrollments.length === 0 ? (
                   <div className="text-center py-8">
-                    <p className="text-gray-500 mb-4">You're not enrolled in any cohorts yet</p>
+                    <p className="text-muted-foreground mb-4">You're not enrolled in any cohorts yet</p>
                     <Link href="/courses">
                       <Button>Browse Courses</Button>
                     </Link>
@@ -157,19 +152,12 @@ export default async function DashboardPage() {
                 ) : (
                   <div className="space-y-4">
                     {userData.enrollments.map((enrollment: any) => (
-                      <div key={enrollment.id} className="border rounded-lg p-4">
+                      <div key={enrollment.id} className="border rounded-lg p-4 bg-card">
                         <div className="flex justify-between items-start">
-                          <div>
-                            <h3 className="font-semibold text-lg">
-                              {enrollment.cohort.course.title}
-                            </h3>
-                            <p className="text-gray-600">{enrollment.cohort.name}</p>
-                            <p className="text-sm text-gray-500 mt-1">
-                              Started: {enrollment.cohort.startDate
-                                ? new Date(enrollment.cohort.startDate).toLocaleDateString()
-                                : 'TBD'
-                              }
-                            </p>
+                          <div className="flex-1">
+                            <h3 className="font-semibold text-lg text-foreground">{enrollment.cohort.course.title}</h3>
+                            <p className="text-muted-foreground">{enrollment.cohort.name}</p>
+                            <p className="text-sm text-muted-foreground mt-1">Started: {enrollment.cohort.startDate ? new Date(enrollment.cohort.startDate).toLocaleDateString() : 'TBD'}</p>
                           </div>
                           <Link href={`/cohorts/${enrollment.cohort.id}`}>
                             <Button size="sm">Continue</Button>
@@ -192,9 +180,7 @@ export default async function DashboardPage() {
               </CardHeader>
               <CardContent>
                 {userData.lessonProgress.length === 0 ? (
-                  <p className="text-gray-500 text-center py-4">
-                    No completed lessons yet
-                  </p>
+                  <p className="text-muted-foreground text-center py-4">No completed lessons yet</p>
                 ) : (
                   <div className="space-y-3">
                     {userData.lessonProgress.slice(0, 5).map((progress: any) => (
@@ -202,9 +188,7 @@ export default async function DashboardPage() {
                         <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                         <div>
                           <p className="font-medium">{progress.lesson.title}</p>
-                          <p className="text-sm text-gray-500">
-                            {progress.lesson.section.course.title}
-                          </p>
+                          <p className="text-sm text-muted-foreground">{progress.lesson.section.course.title}</p>
                         </div>
                       </div>
                     ))}
@@ -226,26 +210,16 @@ export default async function DashboardPage() {
               </CardHeader>
               <CardContent>
                 {upcomingSessions.length === 0 ? (
-                  <p className="text-gray-500 text-center py-4">
-                    No upcoming sessions
-                  </p>
+                  <p className="text-muted-foreground text-center py-4">No upcoming sessions</p>
                 ) : (
                   <div className="space-y-4">
-                    {upcomingSessions.map((session: any) => (
-                      <div key={session.id} className="border rounded-lg p-3">
-                        <h4 className="font-semibold text-sm">{session.title}</h4>
-                        <p className="text-xs text-gray-600">{session.courseName}</p>
-                        <p className="text-xs text-gray-500 mt-1">
-                          {new Date(session.startTime).toLocaleDateString()} at{' '}
-                          {new Date(session.startTime).toLocaleTimeString([], {
-                            hour: '2-digit',
-                            minute: '2-digit'
-                          })}
-                        </p>
-                        {session.embedUrl && (
-                          <Button size="sm" className="mt-2 w-full">
-                            Join Session
-                          </Button>
+                    {upcomingSessions.map((up: any) => (
+                      <div key={up.id} className="border rounded-lg p-3 bg-card">
+                        <h4 className="font-semibold text-sm">{up.title}</h4>
+                        <p className="text-xs text-muted-foreground">{up.courseName}</p>
+                        <p className="text-xs text-muted-foreground mt-1">{new Date(up.startTime).toLocaleDateString()} at {new Date(up.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                        {up.embedUrl && (
+                          <Button size="sm" className="mt-2 w-full">Join Session</Button>
                         )}
                       </div>
                     ))}
@@ -262,18 +236,16 @@ export default async function DashboardPage() {
               <CardContent>
                 <div className="space-y-3">
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Enrolled Cohorts</span>
+                    <span className="text-muted-foreground">Enrolled Cohorts</span>
                     <span className="font-semibold">{userData.enrollments.length}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Completed Lessons</span>
+                    <span className="text-muted-foreground">Completed Lessons</span>
                     <span className="font-semibold">{userData.lessonProgress.length}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Member Since</span>
-                    <span className="font-semibold">
-                      {new Date(userData.createdAt).toLocaleDateString()}
-                    </span>
+                    <span className="text-muted-foreground">Member Since</span>
+                    <span className="font-semibold">{new Date(userData.createdAt).toLocaleDateString()}</span>
                   </div>
                 </div>
               </CardContent>

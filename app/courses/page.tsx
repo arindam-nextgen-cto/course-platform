@@ -47,12 +47,12 @@ export default async function CoursesPage() {
   const courses = await getCourses()
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background text-foreground">
       {/* Page Content */}
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Available Courses</h1>
-          <p className="text-xl text-gray-600">
+          <h1 className="text-4xl font-bold text-foreground mb-4">Available Courses</h1>
+          <p className="text-xl text-muted-foreground">
             Join structured learning cohorts and build real-world skills
           </p>
         </div>
@@ -70,8 +70,8 @@ export default async function CoursesPage() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {courses.length === 0 ? (
             <div className="col-span-full text-center py-12">
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">No courses available yet</h3>
-              <p className="text-gray-600">Check back soon for new cohorts!</p>
+              <h3 className="text-xl font-semibold text-foreground mb-2">No courses available yet</h3>
+              <p className="text-muted-foreground">Check back soon for new cohorts!</p>
             </div>
           ) : (
             courses.map((course: CourseWithCohorts) => (
@@ -91,7 +91,7 @@ export default async function CoursesPage() {
                         {course.level}
                       </span>
                       {course.category && (
-                        <span className="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">
+                        <span className="px-2 py-1 bg-muted text-muted-foreground text-xs rounded-full">
                           {course.category}
                         </span>
                       )}
@@ -102,13 +102,13 @@ export default async function CoursesPage() {
                   <div className="space-y-4">
                     {course.cohorts.length > 0 ? (
                       <div>
-                        <h4 className="font-semibold text-sm text-gray-900 mb-2">
+                        <h4 className="font-semibold text-sm text-foreground mb-2">
                           Upcoming Cohorts:
                         </h4>
                         <div className="space-y-2">
                           {course.cohorts.slice(0, 2).map((cohort: any) => (
                             <div key={cohort.id} className="flex justify-between items-center text-sm">
-                              <span className="text-gray-600">
+                              <span className="text-muted-foreground">
                                 {cohort.startDate 
                                   ? new Date(cohort.startDate).toLocaleDateString()
                                   : 'TBD'
@@ -122,7 +122,7 @@ export default async function CoursesPage() {
                         </div>
                       </div>
                     ) : (
-                      <p className="text-sm text-gray-500">No active cohorts</p>
+                      <p className="text-sm text-muted-foreground">No active cohorts</p>
                     )}
                     
                     <Link href={`/courses/${course.slug}`}>

@@ -17,10 +17,10 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
       <Link
         href="/"
         aria-label="NextGen-CTO home"
-        className="absolute left-4 top-4 md:left-8 md:top-8 z-30 p-2 rounded-lg hover:bg-white/3 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
+        className="absolute left-4 top-4 md:left-8 md:top-8 z-30 p-2 rounded-lg hover:bg-accent/8 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
       >
         <div className="w-8 h-8 bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--accent-2))] rounded-lg flex items-center justify-center">
-          <span className="text-white font-bold text-sm">N</span>
+          <span className="text-primary-foreground font-bold text-sm">N</span>
         </div>
       </Link>
 

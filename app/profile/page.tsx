@@ -68,7 +68,7 @@ export default async function ProfilePage() {
     'User'
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background text-foreground">
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           {/* Profile Header */}
@@ -80,16 +80,14 @@ export default async function ProfilePage() {
                     src={userData.profile?.avatar || session.user.user_metadata?.avatar_url}
                     alt={userDisplayName}
                   />
-                  <AvatarFallback className="bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--accent-2))] text-white text-lg">
+                  <AvatarFallback className="bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--accent-2))] text-primary-foreground text-lg">
                     {getUserInitials(userDisplayName, session.user.email)}
                   </AvatarFallback>
                 </Avatar>
 
                 <div className="flex-1">
-                  <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                    {userDisplayName}
-                  </h1>
-                  <div className="flex flex-wrap items-center gap-4 text-gray-600 mb-4">
+                  <h1 className="text-3xl font-bold text-foreground mb-2">{userDisplayName}</h1>
+                  <div className="flex flex-wrap items-center gap-4 text-muted-foreground mb-4">
                     <div className="flex items-center">
                       <Mail className="w-4 h-4 mr-2" />
                       {session.user.email}
@@ -100,11 +98,11 @@ export default async function ProfilePage() {
                     </div>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+                    <Badge variant="secondary" className="bg-[hsl(var(--secondary))/0.12] text-secondary-foreground">
                       {userData.profile?.role || 'STUDENT'}
                     </Badge>
                     {userData.enrollments.length > 0 && (
-                      <Badge variant="outline" className="border-green-200 text-green-800">
+                      <Badge variant="outline" className="border-border text-muted-foreground">
                         Active Learner
                       </Badge>
                     )}
@@ -127,7 +125,7 @@ export default async function ProfilePage() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
                       <BookOpen className="w-5 h-5 text-blue-500 mr-2" />
-                      <span className="text-gray-600">Enrolled Cohorts</span>
+                      <span className="text-muted-foreground">Enrolled Cohorts</span>
                     </div>
                     <span className="font-semibold text-lg">{userData.enrollments.length}</span>
                   </div>
@@ -135,7 +133,7 @@ export default async function ProfilePage() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
                       <Award className="w-5 h-5 text-green-500 mr-2" />
-                      <span className="text-gray-600">Completed Lessons</span>
+                      <span className="text-muted-foreground">Completed Lessons</span>
                     </div>
                     <span className="font-semibold text-lg">{userData.completedLessonsCount}</span>
                   </div>
@@ -143,7 +141,7 @@ export default async function ProfilePage() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
                       <Clock className="w-5 h-5 text-orange-500 mr-2" />
-                      <span className="text-gray-600">Member Since</span>
+                      <span className="text-muted-foreground">Member Since</span>
                     </div>
                     <span className="font-semibold text-sm">
                       {userData.profile?.createdAt
@@ -189,11 +187,9 @@ export default async function ProfilePage() {
                 <CardContent>
                   {userData.enrollments.length === 0 ? (
                     <div className="text-center py-8">
-                      <BookOpen className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                        No enrollments yet
-                      </h3>
-                      <p className="text-gray-600 mb-4">
+                      <BookOpen className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                        <h3 className="text-lg font-semibold text-foreground mb-2">No enrollments yet</h3>
+                        <p className="text-muted-foreground mb-4">
                         Start your learning journey by enrolling in a course
                       </p>
                       <Button>Browse Courses</Button>
@@ -201,16 +197,16 @@ export default async function ProfilePage() {
                   ) : (
                     <div className="space-y-4">
                       {userData.enrollments.map((enrollment: any) => (
-                        <div key={enrollment.id} className="border rounded-lg p-4 hover:bg-gray-50 transition-colors">
+                        <div key={enrollment.id} className="border rounded-lg p-4 bg-card transition-colors">
                           <div className="flex justify-between items-start">
                             <div className="flex-1">
-                              <h3 className="font-semibold text-lg text-gray-900 mb-1">
+                              <h3 className="font-semibold text-lg text-foreground mb-1">
                                 {enrollment.cohorts?.courses?.title || 'Course Title'}
                               </h3>
-                              <p className="text-gray-600 mb-2">
+                              <p className="text-muted-foreground mb-2">
                                 {enrollment.cohorts?.name || 'Cohort Name'}
                               </p>
-                              <div className="flex items-center space-x-4 text-sm text-gray-500">
+                              <div className="flex items-center space-x-4 text-sm text-muted-foreground">
                                 <span>
                                   Status: <Badge variant="outline" className="ml-1">
                                     {enrollment.status}

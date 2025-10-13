@@ -49,13 +49,13 @@ export default async function SettingsPage() {
     'User'
 
   return (
-    <div className="min-h-screen bg-gray-50">
+  <div className="min-h-screen bg-background text-foreground">
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Settings</h1>
-            <p className="text-gray-600">Manage your account settings and preferences</p>
+            <h1 className="text-3xl font-bold text-foreground mb-2">Settings</h1>
+            <p className="text-muted-foreground">Manage your account settings and preferences</p>
           </div>
 
           <div className="grid md:grid-cols-4 gap-6">
@@ -64,19 +64,19 @@ export default async function SettingsPage() {
               <Card>
                 <CardContent className="p-4">
                   <nav className="space-y-2">
-                    <a href="#profile" className="flex items-center px-3 py-2 text-sm font-medium text-orange-600 bg-orange-50 rounded-md">
+                    <a href="#profile" className="flex items-center px-3 py-2 text-sm font-medium text-orange-600 bg-[hsl(var(--accent)/0.12)] rounded-md">
                       <User className="w-4 h-4 mr-2" />
                       Profile
                     </a>
-                    <a href="#notifications" className="flex items-center px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md">
+                    <a href="#notifications" className="flex items-center px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent/6 rounded-md">
                       <Bell className="w-4 h-4 mr-2" />
                       Notifications
                     </a>
-                    <a href="#security" className="flex items-center px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md">
+                    <a href="#security" className="flex items-center px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent/6 rounded-md">
                       <Shield className="w-4 h-4 mr-2" />
                       Security
                     </a>
-                    <a href="#billing" className="flex items-center px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md">
+                    <a href="#billing" className="flex items-center px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent/6 rounded-md">
                       <CreditCard className="w-4 h-4 mr-2" />
                       Billing
                     </a>
@@ -105,42 +105,38 @@ export default async function SettingsPage() {
                         src={profile?.avatar || session.user.user_metadata?.avatar_url}
                         alt={userDisplayName}
                       />
-                      <AvatarFallback className="bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--accent-2))] text-white text-lg">
+                      <AvatarFallback className="bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--accent-2))] text-primary-foreground text-lg">
                         {getUserInitials(userDisplayName, session.user.email)}
                       </AvatarFallback>
                     </Avatar>
                     <div>
                       <Button variant="outline" size="sm">Change Avatar</Button>
-                      <p className="text-xs text-gray-500 mt-1">JPG, GIF or PNG. 1MB max.</p>
+                      <p className="text-xs text-muted-foreground mt-1">JPG, GIF or PNG. 1MB max.</p>
                     </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                      <label className="block text-sm font-medium text-muted-foreground mb-1">
                         Display Name
                       </label>
-                      <div className="text-sm text-gray-900 p-2 bg-gray-50 rounded border">
+                      <div className="text-sm text-card-foreground p-2 bg-card rounded border border-border">
                         {userDisplayName}
                       </div>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                      <label className="block text-sm font-medium text-muted-foreground mb-1">
                         Email
                       </label>
-                      <div className="text-sm text-gray-900 p-2 bg-gray-50 rounded border">
+                      <div className="text-sm text-card-foreground p-2 bg-card rounded border border-border">
                         {session.user.email}
                       </div>
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Role
-                    </label>
-                    <Badge variant="secondary" className="bg-blue-100 text-blue-800">
-                      {profile?.role || 'STUDENT'}
-                    </Badge>
+                    <label className="block text-sm font-medium text-muted-foreground mb-1">Role</label>
+                    <Badge variant="secondary" className="bg-blue-100 text-blue-800">{profile?.role || 'STUDENT'}</Badge>
                   </div>
 
                   <div className="flex justify-end">
@@ -165,7 +161,7 @@ export default async function SettingsPage() {
                     <div className="flex items-center justify-between">
                       <div>
                         <h4 className="text-sm font-medium">Course Updates</h4>
-                        <p className="text-sm text-gray-500">Get notified about new lessons and course announcements</p>
+                        <p className="text-sm text-muted-foreground">Get notified about new lessons and course announcements</p>
                       </div>
                       <Button variant="outline" size="sm">Configure</Button>
                     </div>
@@ -175,7 +171,7 @@ export default async function SettingsPage() {
                     <div className="flex items-center justify-between">
                       <div>
                         <h4 className="text-sm font-medium">Live Sessions</h4>
-                        <p className="text-sm text-gray-500">Reminders for upcoming live sessions and cohort meetings</p>
+                        <p className="text-sm text-muted-foreground">Reminders for upcoming live sessions and cohort meetings</p>
                       </div>
                       <Button variant="outline" size="sm">Configure</Button>
                     </div>
@@ -185,7 +181,7 @@ export default async function SettingsPage() {
                     <div className="flex items-center justify-between">
                       <div>
                         <h4 className="text-sm font-medium">Community</h4>
-                        <p className="text-sm text-gray-500">Updates from discussions and community interactions</p>
+                        <p className="text-sm text-muted-foreground">Updates from discussions and community interactions</p>
                       </div>
                       <Button variant="outline" size="sm">Configure</Button>
                     </div>
@@ -209,9 +205,7 @@ export default async function SettingsPage() {
                     <div className="flex items-center justify-between">
                       <div>
                         <h4 className="text-sm font-medium">Connected Accounts</h4>
-                        <p className="text-sm text-gray-500">
-                          Signed in via {session.user.app_metadata?.provider || 'OAuth'}
-                        </p>
+                        <p className="text-sm text-muted-foreground">Signed in via {session.user.app_metadata?.provider || 'OAuth'}</p>
                       </div>
                       <Button variant="outline" size="sm">
                         <ExternalLink className="w-4 h-4 mr-2" />
@@ -224,7 +218,7 @@ export default async function SettingsPage() {
                     <div className="flex items-center justify-between">
                       <div>
                         <h4 className="text-sm font-medium">Privacy Settings</h4>
-                        <p className="text-sm text-gray-500">Control who can see your profile and activity</p>
+                        <p className="text-sm text-muted-foreground">Control who can see your profile and activity</p>
                       </div>
                       <Button variant="outline" size="sm">Configure</Button>
                     </div>
@@ -234,7 +228,7 @@ export default async function SettingsPage() {
                     <div className="flex items-center justify-between">
                       <div>
                         <h4 className="text-sm font-medium">Data Export</h4>
-                        <p className="text-sm text-gray-500">Download a copy of your data</p>
+                        <p className="text-sm text-muted-foreground">Download a copy of your data</p>
                       </div>
                       <Button variant="outline" size="sm">
                         <Download className="w-4 h-4 mr-2" />
@@ -258,13 +252,9 @@ export default async function SettingsPage() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="text-center py-8">
-                    <CreditCard className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                      No active subscriptions
-                    </h3>
-                    <p className="text-gray-600 mb-4">
-                      You're currently on the free plan. Upgrade to access premium features.
-                    </p>
+                    <CreditCard className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                    <h3 className="text-lg font-semibold text-foreground mb-2">No active subscriptions</h3>
+                    <p className="text-muted-foreground mb-4">You're currently on the free plan. Upgrade to access premium features.</p>
                     <Button>View Plans</Button>
                   </div>
                 </CardContent>

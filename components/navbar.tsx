@@ -17,6 +17,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { User, Settings, LogOut, BookOpen, BarChart3 } from 'lucide-react'
 import type { Session } from '@supabase/supabase-js'
 import MobileDrawer from '@/components/mobile-drawer'
+import ThemeToggle from './theme-toggle'
 
 export default function Navbar({ initialSession }: { initialSession: Session | null }) {
     const [session, setSession] = useState<Session | null>(initialSession)
@@ -82,8 +83,8 @@ export default function Navbar({ initialSession }: { initialSession: Session | n
     }
 
     const headerClass = isScrolled
-        ? 'sticky top-0 z-50 bg-black/95 border-b border-gray-800 shadow-lg transition-all duration-200'
-        : 'sticky top-0 z-50 bg-[#05060a] border-b border-gray-900 transition-all duration-200'
+        ? 'sticky top-0 z-50 bg-card border-b border-border shadow-lg transition-all duration-200'
+        : 'sticky top-0 z-50 header-initial border-b border-border transition-all duration-200'
 
     return (
         <>
@@ -93,13 +94,13 @@ export default function Navbar({ initialSession }: { initialSession: Session | n
                     <div className="flex items-center space-x-4 col-span-1 z-20">
                         <Link href="/" aria-label="NextGen-CTO home" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
                             <div className="w-8 h-8 bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--accent-2))] rounded-lg flex items-center justify-center" aria-hidden="true">
-                                <span className="text-white font-bold text-sm">N</span>
+                                <span className="text-primary-foreground font-bold text-sm">N</span>
                             </div>
-                            <h1 className="text-xl font-bold text-white">NextGen-CTO</h1>
+                            <h1 className="text-xl font-bold text-foreground">NextGen-CTO</h1>
                         </Link>
                         {/* Trusted pill */}
-                        <div className="hidden md:flex items-center">
-                            <div className="trusted-pill text-xs text-gray-300">Trusted by <strong className="ml-1">1.5M+</strong></div>
+                            <div className="hidden md:flex items-center">
+                            <div className="trusted-pill text-xs text-muted-foreground">Trusted by <strong className="ml-1">1.5M+</strong></div>
                         </div>
                     </div>
 
@@ -135,7 +136,7 @@ export default function Navbar({ initialSession }: { initialSession: Session | n
                                                 src={session.user.user_metadata?.avatar_url}
                                                 alt={session.user.user_metadata?.full_name || session.user.email || 'User'}
                                             />
-                                            <AvatarFallback className="bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--accent-2))] text-white">
+                                            <AvatarFallback className="bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--accent-2))] text-primary-foreground">
                                                 {getUserInitials(
                                                     session.user.user_metadata?.full_name || session.user.user_metadata?.name,
                                                     session.user.email
@@ -144,45 +145,45 @@ export default function Navbar({ initialSession }: { initialSession: Session | n
                                         </Avatar>
                                     </button>
                                 </DropdownMenuTrigger>
-                                <DropdownMenuContent className="w-56 bg-gray-900 border-gray-700" align="end" forceMount>
+                                <DropdownMenuContent className="w-56 bg-popover border-border" align="end" forceMount>
                                     <DropdownMenuLabel className="font-normal">
                                         <div className="flex flex-col space-y-1">
-                                            <p className="text-sm font-medium leading-none text-white">
+                                                <p className="text-sm font-medium leading-none text-foreground">
                                                 {session.user.user_metadata?.full_name || session.user.user_metadata?.name || 'User'}
                                             </p>
-                                            <p className="text-xs leading-none text-gray-400">
+                                            <p className="text-xs leading-none text-muted-foreground">
                                                 {session.user.email}
                                             </p>
                                         </div>
                                     </DropdownMenuLabel>
-                                    <DropdownMenuSeparator className="bg-gray-700" />
-                                    <DropdownMenuItem asChild className="text-gray-300 hover:text-white hover:bg-gray-800">
+                                    <DropdownMenuSeparator className="bg-border" />
+                                    <DropdownMenuItem asChild className="text-muted-foreground hover:text-foreground hover:bg-accent/6">
                                         <Link href="/dashboard" className="flex items-center">
                                             <BarChart3 className="mr-2 h-4 w-4" />
                                             <span>Dashboard</span>
                                         </Link>
                                     </DropdownMenuItem>
-                                    <DropdownMenuItem asChild className="text-gray-300 hover:text-white hover:bg-gray-800">
+                                    <DropdownMenuItem asChild className="text-muted-foreground hover:text-foreground hover:bg-accent/6">
                                         <Link href="/courses" className="flex items-center">
                                             <BookOpen className="mr-2 h-4 w-4" />
                                             <span>My Courses</span>
                                         </Link>
                                     </DropdownMenuItem>
-                                    <DropdownMenuItem asChild className="text-gray-300 hover:text-white hover:bg-gray-800">
+                                    <DropdownMenuItem asChild className="text-muted-foreground hover:text-foreground hover:bg-accent/6">
                                         <Link href="/profile" className="flex items-center">
                                             <User className="mr-2 h-4 w-4" />
                                             <span>Profile</span>
                                         </Link>
                                     </DropdownMenuItem>
-                                    <DropdownMenuItem asChild className="text-gray-300 hover:text-white hover:bg-gray-800">
+                                    <DropdownMenuItem asChild className="text-muted-foreground hover:text-foreground hover:bg-accent/6">
                                         <Link href="/settings" className="flex items-center">
                                             <Settings className="mr-2 h-4 w-4" />
                                             <span>Settings</span>
                                         </Link>
                                     </DropdownMenuItem>
-                                    <DropdownMenuSeparator className="bg-gray-700" />
+                                    <DropdownMenuSeparator className="bg-border" />
                                     <DropdownMenuItem
-                                        className="text-gray-300 hover:text-white hover:bg-gray-800 cursor-pointer"
+                                        className="text-muted-foreground hover:text-foreground hover:bg-accent/6 cursor-pointer"
                                         onClick={handleSignOut}
                                         disabled={loading}
                                     >
@@ -193,14 +194,17 @@ export default function Navbar({ initialSession }: { initialSession: Session | n
                             </DropdownMenu>
                         ) : (
                             <>
-                                <Button asChild variant="ghost" className="hidden md:inline-flex font-medium text-white hover:bg-gray-800">
+                                <ThemeToggle />
+                                <Button asChild variant="ghost" className="hidden md:inline-flex font-medium text-foreground hover:bg-accent/8">
                                     <Link href="/auth/signin">Sign In</Link>
                                 </Button>
-                                <Button asChild className="hidden md:inline-flex bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--accent-2))] text-white font-medium shadow-md hover:shadow-lg transform-gpu transition-shadow duration-200">
+                                <Button asChild className="hidden md:inline-flex bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--accent-2))] text-primary-foreground font-medium shadow-md hover:shadow-lg transform-gpu transition-shadow duration-200">
                                     <Link href="/auth/signup">Get Started</Link>
                                 </Button>
                             </>
                         )}
+                        {/* Place theme toggle for signed-in users as well */}
+                        {session && <ThemeToggle />}
                     </div>
                 </div>
             </header>

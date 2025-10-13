@@ -49,25 +49,25 @@ export default function SignUpPage() {
       <div className="max-w-md w-full space-y-8">
         {/* Compact header */}
         <div className="text-center">
-          <h2 className="text-2xl font-semibold text-white mb-1">Create your account</h2>
-          <p className="text-sm text-gray-400">Join cohorts, build projects, and learn with peers.</p>
+          <h2 className="text-2xl font-semibold text-foreground mb-1">Create your account</h2>
+          <p className="text-sm text-muted-foreground">Join cohorts, build projects, and learn with peers.</p>
         </div>
 
         {/* Error Message */}
         {error && (
           <div className="bg-red-900/20 border border-red-800 rounded-lg p-4 flex items-center space-x-2">
-            <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0" />
-            <p className="text-red-300 text-sm">{error}</p>
+            <AlertCircle className="w-5 h-5 text-destructive flex-shrink-0" />
+            <p className="text-destructive text-sm">{error}</p>
           </div>
         )}
 
         {/* Sign Up Card (focused) */}
-        <Card className="bg-gray-800/60 border-gray-700 backdrop-blur-sm">
+        <Card className="bg-card/80 border-border backdrop-blur-sm">
           <CardContent className="space-y-4 py-8">
             <Button
               onClick={() => handleOAuthSignUp('google')}
               disabled={loading}
-              className="w-full py-4 text-lg bg-white hover:bg-gray-100 text-gray-900 border-0 flex items-center justify-center"
+              className="w-full py-4 text-lg bg-card/95 hover:bg-card/90 dark:bg-card dark:hover:bg-input text-foreground border-0 flex items-center justify-center"
               size="lg"
             >
               <svg className="w-5 h-5 mr-3" viewBox="0 0 24 24">
@@ -94,7 +94,7 @@ export default function SignUpPage() {
             <Button
               onClick={() => handleOAuthSignUp('github')}
               disabled={loading}
-              className="w-full py-4 text-lg bg-gray-900 hover:bg-gray-800 text-white border border-gray-600 flex items-center justify-center"
+              className="w-full py-4 text-lg bg-input hover:bg-accent/8 text-foreground border-border flex items-center justify-center"
               size="lg"
             >
               <Github className="w-5 h-5 mr-3" />
@@ -105,8 +105,8 @@ export default function SignUpPage() {
 
         {/* Minimal footer */}
         <div className="text-center">
-          <p className="text-gray-400 text-sm">Already have an account? <Button asChild variant="link"><Link href="/auth/signin" className="font-medium text-orange-400 hover:text-orange-300">Sign in</Link></Button></p>
-          <p className="text-xs text-gray-500 mt-3">By creating an account you agree to our <Link href="/terms" className="text-orange-400">Terms</Link> and <Link href="/privacy" className="text-orange-400">Privacy</Link>.</p>
+          <p className="text-muted-foreground text-sm">Already have an account? <Button asChild variant="link"><Link href="/auth/signin" className="font-medium text-orange-400 hover:text-orange-300">Sign in</Link></Button></p>
+          <p className="text-xs text-muted-foreground mt-3">By creating an account you agree to our <Link href="/terms" className="text-orange-400">Terms</Link> and <Link href="/privacy" className="text-orange-400">Privacy</Link>.</p>
         </div>
       </div>
   )
