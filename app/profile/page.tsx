@@ -124,7 +124,7 @@ export default async function ProfilePage() {
                 <CardContent className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
-                      <BookOpen className="w-5 h-5 text-blue-500 mr-2" />
+                      <BookOpen className="w-5 h-5 text-[hsl(var(--secondary))] mr-2" />
                       <span className="text-muted-foreground">Enrolled Cohorts</span>
                     </div>
                     <span className="font-semibold text-lg">{userData.enrollments.length}</span>
@@ -132,7 +132,7 @@ export default async function ProfilePage() {
 
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
-                      <Award className="w-5 h-5 text-green-500 mr-2" />
+                      <Award className="w-5 h-5 text-[hsl(var(--primary))] mr-2" />
                       <span className="text-muted-foreground">Completed Lessons</span>
                     </div>
                     <span className="font-semibold text-lg">{userData.completedLessonsCount}</span>
@@ -140,7 +140,7 @@ export default async function ProfilePage() {
 
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
-                      <Clock className="w-5 h-5 text-orange-500 mr-2" />
+                      <Clock className="w-5 h-5 text-[hsl(var(--accent))] mr-2" />
                       <span className="text-muted-foreground">Member Since</span>
                     </div>
                     <span className="font-semibold text-sm">
@@ -188,8 +188,8 @@ export default async function ProfilePage() {
                   {userData.enrollments.length === 0 ? (
                     <div className="text-center py-8">
                       <BookOpen className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                        <h3 className="text-lg font-semibold text-foreground mb-2">No enrollments yet</h3>
-                        <p className="text-muted-foreground mb-4">
+                      <h3 className="text-lg font-semibold text-foreground mb-2">No enrollments yet</h3>
+                      <p className="text-muted-foreground mb-4">
                         Start your learning journey by enrolling in a course
                       </p>
                       <Button>Browse Courses</Button>

@@ -185,7 +185,7 @@ export default async function DashboardPage() {
                   <div className="space-y-3">
                     {userData.lessonProgress.slice(0, 5).map((progress: any) => (
                       <div key={progress.id} className="flex items-center space-x-3">
-                        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                        <div className="w-2 h-2 bg-[hsl(var(--secondary))] rounded-full"></div>
                         <div>
                           <p className="font-medium">{progress.lesson.title}</p>
                           <p className="text-sm text-muted-foreground">{progress.lesson.section.course.title}</p>

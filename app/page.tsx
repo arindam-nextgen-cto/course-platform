@@ -11,13 +11,13 @@ export default function HomePage() {
       <Hero />
 
       {/* Trending Section */}
-        <section className="py-20 bg-card">
+      <section className="py-20 bg-card">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
               Trending
             </h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Discover what's hot in our learning community. Join the most popular cohorts and trending discussions.
             </p>
           </div>
@@ -47,8 +47,8 @@ export default function HomePage() {
             <Card className="bg-card border-border hover:shadow-md transition-colors">
               <CardHeader>
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-full overflow-hidden">
-                    <div className="w-full h-full bg-gradient-to-br from-green-400 to-green-600"></div>
+                  <div className="w-12 h-12 bg-gradient-to-br from-[hsl(var(--secondary))] to-[hsl(var(--accent-2))] rounded-full overflow-hidden">
+                    <div className="w-full h-full bg-gradient-to-br from-[hsl(var(--secondary))] to-[hsl(var(--accent-2))]"></div>
                   </div>
                   <div>
                     <CardTitle className="text-foreground text-lg">Python & AI</CardTitle>
@@ -68,8 +68,8 @@ export default function HomePage() {
             <Card className="bg-card border-border hover:shadow-md transition-colors">
               <CardHeader>
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full overflow-hidden">
-                    <div className="w-full h-full bg-gradient-to-br from-purple-400 to-purple-600"></div>
+                  <div className="w-12 h-12 bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--accent-2))] rounded-full overflow-hidden">
+                    <div className="w-full h-full bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--accent-2))]"></div>
                   </div>
                   <div>
                     <CardTitle className="text-foreground text-lg">DevOps Pro</CardTitle>
@@ -90,7 +90,7 @@ export default function HomePage() {
       </section>
 
       {/* Instructors Section */}
-  <section className="py-20 bg-card">
+      <section className="py-20 bg-card">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
@@ -122,14 +122,14 @@ export default function HomePage() {
                       <div className="text-sm text-muted-foreground">On-demand 1:1 sessions — focused, actionable, and time-boxed.</div>
                     </li>
                     <li className="flex items-start gap-3">
-                      <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-indigo-600 text-primary-foreground font-semibold">P</span>
+                      <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[hsl(var(--primary))] text-primary-foreground font-semibold">P</span>
                       <div className="text-sm text-muted-foreground">Practical project feedback and interview-ready guidance.</div>
                     </li>
                   </ul>
 
                   <div className="flex gap-3">
                     <Link href="/mentors">
-                      <Button className="bg-white dark:bg-card !text-primary hover:opacity-95">Explore Roadmaps</Button>
+                      <Button className="bg-[hsl(var(--card))/0.95] hover:opacity-95 text-foreground">Explore Roadmaps</Button>
                     </Link>
                     <Link href="/auth/signin">
                       <Button variant="outline" className="border-border text-muted-foreground">Book 1:1</Button>
@@ -175,7 +175,7 @@ export default function HomePage() {
                       <p className="text-muted-foreground text-sm">Ex-OpenAI, Tesla • AI & ML</p>
                     </div>
                     <div className="ml-auto flex gap-2">
-                      <Badge className="bg-indigo-700 text-primary-foreground">Roadmaps</Badge>
+                      <Badge className="bg-[hsl(var(--primary))] text-primary-foreground">Roadmaps</Badge>
                       <Badge variant="outline" className="border-border text-muted-foreground">1:1</Badge>
                     </div>
                   </div>
@@ -194,13 +194,13 @@ export default function HomePage() {
               <Card className="bg-card border-border hover:scale-[1.02] transform-gpu transition-transform">
                 <CardHeader>
                   <div className="flex items-center gap-4">
-                    <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-full overflow-hidden"></div>
+                    <div className="w-16 h-16 bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--accent-2))] rounded-full overflow-hidden"></div>
                     <div>
                       <h3 className="text-foreground font-semibold">Manish Reddy</h3>
                       <p className="text-muted-foreground text-sm">Ex-AWS, Netflix • DevOps</p>
                     </div>
                     <div className="ml-auto flex gap-2">
-                      <Badge className="bg-green-700 text-primary-foreground">Roadmaps</Badge>
+                      <Badge className="bg-[hsl(var(--secondary))] text-secondary-foreground">Roadmaps</Badge>
                       <Badge variant="outline" className="border-border text-muted-foreground">1:1</Badge>
                     </div>
                   </div>
@@ -210,7 +210,7 @@ export default function HomePage() {
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-muted-foreground">Hands-on workshops</span>
                     <Link href="/auth/signin">
-                      <Button size="sm" className="bg-gradient-to-r from-green-500 to-green-600">Book</Button>
+                      <Button size="sm" className="bg-gradient-to-r from-[hsl(var(--secondary))] to-[hsl(var(--accent-2))]">Book</Button>
                     </Link>
                   </div>
                 </CardContent>
@@ -219,13 +219,13 @@ export default function HomePage() {
               <Card className="bg-card border-border hover:scale-[1.02] transform-gpu transition-transform">
                 <CardHeader>
                   <div className="flex items-center gap-4">
-                    <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full overflow-hidden"></div>
+                    <div className="w-16 h-16 bg-gradient-to-br from-[hsl(var(--secondary))] to-[hsl(var(--accent-2))] rounded-full overflow-hidden"></div>
                     <div>
                       <h3 className="text-foreground font-semibold">Priya Nair</h3>
                       <p className="text-muted-foreground text-sm">Ex-Stripe, Uber • Backend</p>
                     </div>
                     <div className="ml-auto flex gap-2">
-                      <Badge className="bg-purple-700 text-primary-foreground">Roadmaps</Badge>
+                      <Badge className="bg-[hsl(var(--secondary))] text-secondary-foreground">Roadmaps</Badge>
                       <Badge variant="outline" className="border-border text-muted-foreground">1:1</Badge>
                     </div>
                   </div>
@@ -235,7 +235,7 @@ export default function HomePage() {
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-muted-foreground">System design focus</span>
                     <Link href="/auth/signin">
-                      <Button size="sm" className="bg-gradient-to-r from-purple-500 to-purple-600">Book</Button>
+                      <Button size="sm" className="bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--accent-2))]">Book</Button>
                     </Link>
                   </div>
                 </CardContent>
@@ -246,7 +246,7 @@ export default function HomePage() {
       </section>
 
       {/* Learning Paths */}
-  <section className="py-20 bg-card">
+      <section className="py-20 bg-card">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
@@ -270,19 +270,19 @@ export default function HomePage() {
                 </CardDescription>
                 <div className="space-y-2 mb-6">
                   <div className="flex items-center text-sm text-muted-foreground">
-                    <span className="w-2 h-2 bg-orange-500 rounded-full mr-2"></span>
+                    <span className="w-2 h-2 bg-[hsl(var(--accent))] rounded-full mr-2"></span>
                     React & TypeScript
                   </div>
                   <div className="flex items-center text-sm text-muted-foreground">
-                    <span className="w-2 h-2 bg-orange-500 rounded-full mr-2"></span>
+                    <span className="w-2 h-2 bg-[hsl(var(--accent))] rounded-full mr-2"></span>
                     Node.js & Express
                   </div>
                   <div className="flex items-center text-sm text-muted-foreground">
-                    <span className="w-2 h-2 bg-orange-500 rounded-full mr-2"></span>
+                    <span className="w-2 h-2 bg-[hsl(var(--accent))] rounded-full mr-2"></span>
                     PostgreSQL & Prisma
                   </div>
                   <div className="flex items-center text-sm text-muted-foreground">
-                    <span className="w-2 h-2 bg-orange-500 rounded-full mr-2"></span>
+                    <span className="w-2 h-2 bg-[hsl(var(--accent))] rounded-full mr-2"></span>
                     AWS Deployment
                   </div>
                 </div>
@@ -309,19 +309,19 @@ export default function HomePage() {
                 </CardDescription>
                 <div className="space-y-2 mb-6">
                   <div className="flex items-center text-sm text-muted-foreground">
-                    <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+                    <span className="w-2 h-2 bg-[hsl(var(--secondary))] rounded-full mr-2"></span>
                     Python & Data Science
                   </div>
                   <div className="flex items-center text-sm text-muted-foreground">
-                    <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+                    <span className="w-2 h-2 bg-[hsl(var(--secondary))] rounded-full mr-2"></span>
                     TensorFlow & PyTorch
                   </div>
                   <div className="flex items-center text-sm text-muted-foreground">
-                    <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+                    <span className="w-2 h-2 bg-[hsl(var(--secondary))] rounded-full mr-2"></span>
                     OpenAI & LangChain
                   </div>
                   <div className="flex items-center text-sm text-muted-foreground">
-                    <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+                    <span className="w-2 h-2 bg-[hsl(var(--secondary))] rounded-full mr-2"></span>
                     MLOps & Deployment
                   </div>
                 </div>
@@ -348,7 +348,7 @@ export default function HomePage() {
       </section>
 
       {/* Community Testimonials */}
-  <section className="py-20 bg-card">
+      <section className="py-20 bg-card">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
@@ -363,7 +363,7 @@ export default function HomePage() {
             <Card className="bg-card border-border">
               <CardHeader>
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-green-600 rounded-full"></div>
+                  <div className="w-12 h-12 bg-gradient-to-br from-[hsl(var(--secondary))] to-[hsl(var(--accent-2))] rounded-full"></div>
                   <div>
                     <h3 className="text-foreground font-semibold">Jessica Martinez</h3>
                     <p className="text-muted-foreground text-sm">Software Engineer at Google</p>
@@ -380,7 +380,7 @@ export default function HomePage() {
             <Card className="bg-card border-border">
               <CardHeader>
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full"></div>
+                  <div className="w-12 h-12 bg-gradient-to-br from-[hsl(var(--secondary))] to-[hsl(var(--accent-2))] rounded-full"></div>
                   <div>
                     <h3 className="text-foreground font-semibold">David Chen</h3>
                     <p className="text-muted-foreground text-sm">ML Engineer at OpenAI</p>
@@ -408,7 +408,7 @@ export default function HomePage() {
             consistency, community, and expert guidance. Start your journey today.
           </p>
           <Link href="/auth/signup">
-            <Button size="lg" className="bg-white dark:bg-card !text-primary hover:bg-muted/6 dark:hover:bg-input font-medium px-8">
+            <Button size="lg" className="bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--accent-2))] text-primary-foreground font-medium px-8 hover:opacity-95">
               Start Learning Today
             </Button>
           </Link>

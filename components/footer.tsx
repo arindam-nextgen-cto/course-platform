@@ -35,13 +35,13 @@ export default function Footer() {
                         <h4 className="text-lg font-semibold mb-4 text-foreground">Products</h4>
                         <ul className="space-y-2 text-muted-foreground">
                             <li>
-                                <Link href="/courses" className="hover:text-orange-400 transition-colors">Courses</Link>
+                                <Link href="/courses" className="hover:text-[hsl(var(--accent-2))] transition-colors">Courses</Link>
                             </li>
                             <li>
-                                <Link href="/cohorts" className="hover:text-orange-400 transition-colors">Cohorts</Link>
+                                <Link href="/cohorts" className="hover:text-[hsl(var(--accent-2))] transition-colors">Cohorts</Link>
                             </li>
                             <li>
-                                <a href="#" className="hover:text-orange-400 transition-colors">Udemy</a>
+                                <a href="#" className="hover:text-[hsl(var(--accent-2))] transition-colors">Udemy</a>
                             </li>
                         </ul>
                     </div>
@@ -50,16 +50,16 @@ export default function Footer() {
                         <h4 className="text-lg font-semibold mb-4 text-foreground">Resources</h4>
                         <ul className="space-y-2 text-muted-foreground">
                             <li>
-                                <Link href="/docs" className="hover:text-orange-400 transition-colors">Docs</Link>
+                                <Link href="/docs" className="hover:text-[hsl(var(--accent-2))] transition-colors">Docs</Link>
                             </li>
                             <li>
-                                <Link href="/privacy" className="hover:text-orange-400 transition-colors">Privacy Policy</Link>
+                                <Link href="/privacy" className="hover:text-[hsl(var(--accent-2))] transition-colors">Privacy Policy</Link>
                             </li>
                             <li>
-                                <Link href="/terms" className="hover:text-orange-400 transition-colors">Terms of Service</Link>
+                                <Link href="/terms" className="hover:text-[hsl(var(--accent-2))] transition-colors">Terms of Service</Link>
                             </li>
                             <li>
-                                <Link href="/pricing" className="hover:text-orange-400 transition-colors">Pricing</Link>
+                                <Link href="/pricing" className="hover:text-[hsl(var(--accent-2))] transition-colors">Pricing</Link>
                             </li>
                         </ul>
                     </div>
@@ -68,16 +68,16 @@ export default function Footer() {
                         <h4 className="text-lg font-semibold mb-4 text-foreground">Social</h4>
                         <ul className="space-y-2 text-muted-foreground">
                             <li>
-                                <a href="#" className="hover:text-orange-400 transition-colors">X</a>
+                                <a href="#" className="hover:text-[hsl(var(--accent-2))] transition-colors">X</a>
                             </li>
                             <li>
-                                <a href="#" className="hover:text-orange-400 transition-colors">Discord</a>
+                                <a href="#" className="hover:text-[hsl(var(--accent-2))] transition-colors">Discord</a>
                             </li>
                             <li>
-                                <a href="#" className="hover:text-orange-400 transition-colors">GitHub</a>
+                                <a href="#" className="hover:text-[hsl(var(--accent-2))] transition-colors">GitHub</a>
                             </li>
                             <li>
-                                <a href="#" className="hover:text-orange-400 transition-colors">YouTube</a>
+                                <a href="#" className="hover:text-[hsl(var(--accent-2))] transition-colors">YouTube</a>
                             </li>
                         </ul>
                     </div>

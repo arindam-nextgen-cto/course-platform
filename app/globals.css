@@ -3,18 +3,23 @@
 @tailwind utilities;
 
 @layer base {
+
   /* Default (light) theme tokens */
   :root {
-    --background: 210 40% 98%; /* near-white */
-    --foreground: 222 12% 6%; /* deep navy for text */
+    --background: 210 40% 98%;
+    /* near-white */
+    --foreground: 222 12% 6%;
+    /* deep navy for text */
     --card: 0 0% 100%;
     --card-foreground: 222.2 12% 6%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 12% 6%;
-  --primary: 18 90% 55%;
-  --primary-foreground: 210 40% 98%; /* light text on primary */
-  --secondary: 187 90% 43%;
-  --secondary-foreground: 210 40% 98%; /* light text on secondary */
+    --primary: 18 90% 55%;
+    --primary-foreground: 210 40% 98%;
+    /* light text on primary */
+    --secondary: 187 90% 43%;
+    --secondary-foreground: 210 40% 98%;
+    /* light text on secondary */
     --muted: 210 16% 96%;
     --muted-foreground: 215.4 16.3% 46.9%;
     --accent: 200 80% 60%;
@@ -37,10 +42,11 @@
     --card-foreground: 210 40% 98%;
     --popover: 222.2 14% 8%;
     --popover-foreground: 210 40% 98%;
-  --primary: 18 90% 55%;
-  --primary-foreground: 210 40% 98%; /* ensure white text on brand colors */
-  --secondary: 187 90% 43%;
-  --secondary-foreground: 210 40% 98%;
+    --primary: 18 90% 55%;
+    --primary-foreground: 210 40% 98%;
+    /* ensure white text on brand colors */
+    --secondary: 187 90% 43%;
+    --secondary-foreground: 210 40% 98%;
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
     --accent: 200 80% 60%;

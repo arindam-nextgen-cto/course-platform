@@ -49,7 +49,7 @@ export default async function SettingsPage() {
     'User'
 
   return (
-  <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground">
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
@@ -64,7 +64,7 @@ export default async function SettingsPage() {
               <Card>
                 <CardContent className="p-4">
                   <nav className="space-y-2">
-                    <a href="#profile" className="flex items-center px-3 py-2 text-sm font-medium text-orange-600 bg-[hsl(var(--accent)/0.12)] rounded-md">
+                    <a href="#profile" className="flex items-center px-3 py-2 text-sm font-medium text-[hsl(var(--accent-2))] bg-[hsl(var(--accent)/0.12)] rounded-md">
                       <User className="w-4 h-4 mr-2" />
                       Profile
                     </a>
@@ -136,7 +136,7 @@ export default async function SettingsPage() {
 
                   <div>
                     <label className="block text-sm font-medium text-muted-foreground mb-1">Role</label>
-                    <Badge variant="secondary" className="bg-blue-100 text-blue-800">{profile?.role || 'STUDENT'}</Badge>
+                    <Badge variant="secondary" className="bg-[hsl(var(--muted)/0.14)] text-muted-foreground">{profile?.role || 'STUDENT'}</Badge>
                   </div>
 
                   <div className="flex justify-end">
@@ -261,9 +261,9 @@ export default async function SettingsPage() {
               </Card>
 
               {/* Danger Zone */}
-              <Card className="border-red-200">
+              <Card className="border-[hsl(var(--destructive)/0.28)]">
                 <CardHeader>
-                  <CardTitle className="flex items-center text-red-600">
+                  <CardTitle className="flex items-center text-destructive">
                     <Trash2 className="w-5 h-5 mr-2" />
                     Danger Zone
                   </CardTitle>
@@ -272,10 +272,10 @@ export default async function SettingsPage() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="flex items-center justify-between p-4 border border-red-200 rounded-lg">
+                  <div className="flex items-center justify-between p-4 border border-[hsl(var(--destructive)/0.28)] rounded-lg">
                     <div>
-                      <h4 className="text-sm font-medium text-red-900">Delete Account</h4>
-                      <p className="text-sm text-red-600">
+                      <h4 className="text-sm font-medium text-destructive-foreground">Delete Account</h4>
+                      <p className="text-sm text-destructive">
                         Permanently delete your account and all associated data
                       </p>
                     </div>

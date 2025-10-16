@@ -4,38 +4,38 @@ import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { formatCurrency } from '@/lib/utils'
 import { CourseWithCohorts } from '@/lib/types'
- 
+
 export const dynamic = 'force-dynamic'
- 
+
 async function getCourses(): Promise<CourseWithCohorts[]> {
   const supabase = createServerSupabaseClient()
- 
+
   const { data: courses, error: courseError } = await supabase
     .from('courses')
     .select('*')
     .order('createdAt', { ascending: false })
- 
+
   if (courseError) {
     throw courseError
   }
- 
+
   const { data: cohorts, error: cohortError } = await supabase
     .from('cohorts')
     .select('*')
     .in('status', ['OPEN', 'UPCOMING'])
     .order('startDate', { ascending: true })
- 
+
   if (cohortError) {
     throw cohortError
   }
- 
+
   const cohortsByCourse = new Map<string, any[]>()
   for (const c of cohorts || []) {
     const arr = cohortsByCourse.get(c.courseId) || []
     arr.push(c)
     cohortsByCourse.set(c.courseId, arr)
   }
- 
+
   return (courses || []).map((course: any) => ({
     ...course,
     cohorts: (cohortsByCourse.get(course.id) || []).map((cohort) => cohort),
@@ -87,7 +87,7 @@ export default async function CoursesPage() {
                   </div>
                   {course.level && (
                     <div className="flex items-center space-x-2 mt-2">
-                      <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
+                      <span className="px-2 py-1 bg-[hsl(var(--muted)/0.14)] text-muted-foreground text-xs rounded-full">
                         {course.level}
                       </span>
                       {course.category && (
@@ -109,7 +109,7 @@ export default async function CoursesPage() {
                           {course.cohorts.slice(0, 2).map((cohort: any) => (
                             <div key={cohort.id} className="flex justify-between items-center text-sm">
                               <span className="text-muted-foreground">
-                                {cohort.startDate 
+                                {cohort.startDate
                                   ? new Date(cohort.startDate).toLocaleDateString()
                                   : 'TBD'
                                 }
@@ -124,7 +124,7 @@ export default async function CoursesPage() {
                     ) : (
                       <p className="text-sm text-muted-foreground">No active cohorts</p>
                     )}
-                    
+
                     <Link href={`/courses/${course.slug}`}>
                       <Button className="w-full">
                         View Details

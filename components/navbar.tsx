@@ -99,7 +99,7 @@ export default function Navbar({ initialSession }: { initialSession: Session | n
                             <h1 className="text-xl font-bold text-foreground">NextGen-CTO</h1>
                         </Link>
                         {/* Trusted pill */}
-                            <div className="hidden md:flex items-center">
+                        <div className="hidden md:flex items-center">
                             <div className="trusted-pill text-xs text-muted-foreground">Trusted by <strong className="ml-1">1.5M+</strong></div>
                         </div>
                     </div>
@@ -148,7 +148,7 @@ export default function Navbar({ initialSession }: { initialSession: Session | n
                                 <DropdownMenuContent className="w-56 bg-popover border-border" align="end" forceMount>
                                     <DropdownMenuLabel className="font-normal">
                                         <div className="flex flex-col space-y-1">
-                                                <p className="text-sm font-medium leading-none text-foreground">
+                                            <p className="text-sm font-medium leading-none text-foreground">
                                                 {session.user.user_metadata?.full_name || session.user.user_metadata?.name || 'User'}
                                             </p>
                                             <p className="text-xs leading-none text-muted-foreground">
