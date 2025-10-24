@@ -14,7 +14,9 @@
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",
     "create-admin": "node scripts/create-admin-user.js",
-    "set-admin-role": "node scripts/set-admin-role.js"
+    "set-admin-role": "node scripts/set-admin-role.js",
+    "seed-courses": "node scripts/seed-courses.js",
+    "generate-thumbnails": "node scripts/generate-thumbnails.js"
   },
   "dependencies": {
     "@mux/mux-player-react": "^2.3.0",

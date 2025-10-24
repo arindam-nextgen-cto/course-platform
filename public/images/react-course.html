@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { margin: 0; padding: 20px; background: #f0f0f0; }
+    .thumbnail { width: 400px; height: 225px; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+  </style>
+</head>
+<body>
+  <div class="thumbnail">
+    <svg width="400" height="225" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad-react-course.jpg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#20232A;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#61DAFB;stop-opacity:0.8" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="400" height="225" fill="url(#grad-react-course.jpg)"/>
+  
+  <!-- Pattern overlay -->
+  <defs>
+    <pattern id="pattern-react-course.jpg" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+      <circle cx="20" cy="20" r="2" fill="#61DAFB" opacity="0.1"/>
+    </pattern>
+  </defs>
+  <rect width="400" height="225" fill="url(#pattern-react-course.jpg)"/>
+  
+  <!-- Icon background -->
+  <circle cx="200" cy="90" r="30" fill="#61DAFB" opacity="0.2"/>
+  
+  <!-- Play icon or code symbol -->
+  <text x="200" y="98" font-family="monospace" font-size="24" text-anchor="middle" fill="#61DAFB" opacity="0.6">&lt;/&gt;</text>
+  
+  <!-- Title -->
+  <text x="200" y="150" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="white">
+    React Development
+  </text>
+  
+  <!-- Subtitle -->
+  <text x="200" y="175" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="white" opacity="0.8">
+    NextGen CTO Course
+  </text>
+</svg>
+  </div>
+</body>
+</html>

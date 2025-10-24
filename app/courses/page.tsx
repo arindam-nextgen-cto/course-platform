@@ -2,6 +2,7 @@ import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import Image from 'next/image'
 import { formatCurrency } from '@/lib/utils'
 import { CourseWithCohorts } from '@/lib/types'
 
@@ -75,61 +76,85 @@ export default async function CoursesPage() {
             </div>
           ) : (
             courses.map((course: CourseWithCohorts) => (
-              <Card key={course.id} className="hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <CardTitle className="text-lg">{course.title}</CardTitle>
-                      <CardDescription className="mt-2">
-                        {course.description}
-                      </CardDescription>
-                    </div>
-                  </div>
+              <Card key={course.id} className="hover:shadow-lg transition-shadow flex flex-col h-full">
+                {/* Course Thumbnail */}
+                <div className="relative w-full h-48 overflow-hidden rounded-t-lg">
+                  <Image
+                    src={course.image || '/images/course-placeholder.svg'}
+                    alt={course.title}
+                    fill
+                    className="object-cover"
+                  />
                   {course.level && (
-                    <div className="flex items-center space-x-2 mt-2">
-                      <span className="px-2 py-1 bg-[hsl(var(--muted)/0.14)] text-muted-foreground text-xs rounded-full">
+                    <div className="absolute top-3 left-3">
+                      <span className="px-2 py-1 bg-black/70 text-white text-xs rounded-full">
                         {course.level}
                       </span>
-                      {course.category && (
-                        <span className="px-2 py-1 bg-muted text-muted-foreground text-xs rounded-full">
-                          {course.category}
-                        </span>
-                      )}
                     </div>
                   )}
+                  {course.category && (
+                    <div className="absolute top-3 right-3">
+                      <span className="px-2 py-1 bg-primary text-primary-foreground text-xs rounded-full">
+                        {course.category}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                <CardHeader className="flex-grow">
+                  <CardTitle className="text-lg line-clamp-2">{course.title}</CardTitle>
+                  <CardDescription className="mt-2 line-clamp-3 min-h-[4.5rem]">
+                    {course.description || 'Comprehensive course designed to help you master essential skills and advance your career.'}
+                  </CardDescription>
                 </CardHeader>
-                <CardContent>
+
+                <CardContent className="pt-0">
                   <div className="space-y-4">
-                    {course.cohorts.length > 0 ? (
-                      <div>
-                        <h4 className="font-semibold text-sm text-foreground mb-2">
-                          Upcoming Cohorts:
+                    {/* Course Stats */}
+                    <div className="flex items-center justify-between text-sm text-muted-foreground">
+                      <span>{course.estimatedHours ? `${course.estimatedHours} hours` : '8-12 hours'}</span>
+                      <span>{course._count?.cohorts || 0} cohorts</span>
+                    </div>
+
+                    {/* Cohort Information */}
+                    {course.cohorts.length > 0 && (
+                      <div className="space-y-2">
+                        <h4 className="font-semibold text-sm text-foreground">
+                          Next Cohort:
                         </h4>
-                        <div className="space-y-2">
-                          {course.cohorts.slice(0, 2).map((cohort: any) => (
-                            <div key={cohort.id} className="flex justify-between items-center text-sm">
-                              <span className="text-muted-foreground">
-                                {cohort.startDate
-                                  ? new Date(cohort.startDate).toLocaleDateString()
-                                  : 'TBD'
-                                }
-                              </span>
-                              <span className="font-semibold">
-                                {cohort.price ? formatCurrency(Number(cohort.price)) : 'Free'}
-                              </span>
+                        <div className="flex justify-between items-center text-sm bg-muted/50 p-3 rounded-lg">
+                          <div>
+                            <div className="font-medium">
+                              {course.cohorts[0].startDate
+                                ? new Date(course.cohorts[0].startDate).toLocaleDateString('en-US', {
+                                    month: 'short',
+                                    day: 'numeric',
+                                    year: 'numeric'
+                                  })
+                                : 'Starting Soon'
+                              }
                             </div>
-                          ))}
+                            <div className="text-xs text-muted-foreground">
+                              {course.cohorts[0].capacity ? `${course.cohorts[0].capacity} spots` : 'Limited spots'}
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <div className="font-semibold text-lg">
+                              {course.cohorts[0].price ? formatCurrency(Number(course.cohorts[0].price)) : 'Free'}
+                            </div>
+                          </div>
                         </div>
                       </div>
-                    ) : (
-                      <p className="text-sm text-muted-foreground">No active cohorts</p>
                     )}
 
-                    <Link href={`/courses/${course.slug}`}>
-                      <Button className="w-full">
-                        View Details
-                      </Button>
-                    </Link>
+                    {/* View Details Button - Always at bottom */}
+                    <div className="pt-2">
+                      <Link href={`/courses/${course.slug}`} className="block">
+                        <Button className="w-full">
+                          View Details
+                        </Button>
+                      </Link>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
