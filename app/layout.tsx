@@ -2,8 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import Providers from './providers'
-import Navbar from '@/components/navbar'
-import Footer from '@/components/footer'
+import ConditionalLayout from '@/components/conditional-layout'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -22,15 +21,16 @@ export default async function RootLayout({
   const {
     data: { session },
   } = await supabase.auth.getSession()
+  
   return (
     <html lang="en">
       <body className={`${inter.className} bg-background text-foreground`}>
         {/* Inline script to set initial theme class before hydration to avoid FOUC */}
         <script dangerouslySetInnerHTML={{ __html: `(function(){try{const t=localStorage.getItem('theme');if(t==='dark'){document.documentElement.classList.add('dark');}else if(!t && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){document.documentElement.classList.add('dark');}}catch(e){} })()` }} />
         <Providers>
-          <Navbar initialSession={session} />
-          {children}
-          <Footer />
+          <ConditionalLayout session={session}>
+            {children}
+          </ConditionalLayout>
         </Providers>
       </body>
     </html>

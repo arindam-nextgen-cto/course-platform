@@ -12,7 +12,9 @@
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
-    "db:studio": "prisma studio"
+    "db:studio": "prisma studio",
+    "create-admin": "node scripts/create-admin-user.js",
+    "set-admin-role": "node scripts/set-admin-role.js"
   },
   "dependencies": {
     "@mux/mux-player-react": "^2.3.0",
