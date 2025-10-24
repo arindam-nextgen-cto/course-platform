@@ -66,16 +66,22 @@ model User {
 }
 
 model Course {
-  id          String   @id @default(cuid())
-  title       String
-  slug        String   @unique
-  description String?
-  image       String?
-  level       String?
-  category    String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  createdById String
+  id              String   @id @default(cuid())
+  title           String
+  slug            String   @unique
+  description     String?
+  image           String?
+  level           String?
+  category        String?
+  youtubePlaylist String?  // YouTube playlist URL if applicable
+  published       Boolean  @default(false)
+  featured        Boolean  @default(false)
+  estimatedHours  Int?     // Estimated completion time
+  prerequisites   String?  // Markdown content for prerequisites
+  learningGoals   String?  // Markdown content for what students will learn
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  createdById     String
 
   // Relations
   createdBy User      @relation(fields: [createdById], references: [id])
@@ -125,17 +131,32 @@ model Section {
   @@map("sections")
 }
 
+enum VideoProvider {
+  YOUTUBE
+  VIMEO
+  WISTIA
+  MUX
+  SELF_HOSTED
+  EXTERNAL
+}
+
 model Lesson {
-  id          String   @id @default(cuid())
-  sectionId   String
-  title       String
-  description String?
-  videoUrl    String?
-  content     String?  // Markdown/HTML content
-  orderIndex  Int
-  published   Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id            String        @id @default(cuid())
+  sectionId     String
+  title         String
+  description   String?
+  videoUrl      String?       // Original video URL
+  videoProvider VideoProvider @default(YOUTUBE)
+  videoId       String?       // Extracted video ID (YouTube, Vimeo, etc.)
+  embedUrl      String?       // Custom embed URL for self-hosted videos
+  duration      Int?          // Video duration in seconds
+  thumbnail     String?       // Video thumbnail URL
+  content       String?       // Markdown content
+  orderIndex    Int
+  published     Boolean       @default(false)
+  isFree        Boolean       @default(false)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
 
   // Relations
   section        Section          @relation(fields: [sectionId], references: [id], onDelete: Cascade)

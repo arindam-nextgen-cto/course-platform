@@ -1,289 +1,413 @@
-import { prisma } from '@/lib/prisma'
-import { getCurrentUser } from '@/lib/auth-sync'
+'use client'
+
+import { useEffect, useState } from 'react'
+import { useParams } from 'next/navigation'
+import { createClientSupabaseClient } from '@/lib/supabase'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import VideoPlayer from '@/components/video-player'
+import MarkdownRenderer from '@/components/markdown-renderer'
+import { Clock, Users, BookOpen, Youtube, Edit, Plus } from 'lucide-react'
 import Link from 'next/link'
-import { notFound } from 'next/navigation'
 
-export const dynamic = 'force-dynamic'
+interface Course {
+  id: string
+  title: string
+  slug: string
+  description: string
+  level: string
+  category: string
+  youtubePlaylist: string
+  estimatedHours: number
+  prerequisites: string
+  learningGoals: string
+  published: boolean
+  featured: boolean
+  createdAt: string
+}
 
-export default async function AdminCourseDetailPage({ params }: { params: { slug: string } }) {
-    const user = await getCurrentUser()
+interface Section {
+  id: string
+  title: string
+  orderIndex: number
+  lessons: Lesson[]
+}
 
-    if (!user || (user.role !== 'ADMIN' && user.role !== 'INSTRUCTOR')) {
-        return (
-            <div className="container mx-auto px-4 py-8">
-                <h1 className="text-2xl font-semibold">Access denied</h1>
-                <p className="text-muted-foreground">You must be an admin or instructor to access this page.</p>
-            </div>
-        )
-    }
+interface Lesson {
+  id: string
+  title: string
+  description: string
+  videoUrl: string
+  videoProvider: string
+  videoId: string
+  embedUrl: string
+  thumbnail: string
+  content: string
+  orderIndex: number
+  isFree: boolean
+  published: boolean
+}
 
-    const course = await prisma.course.findUnique({
-        where: { slug: params.slug },
-        include: {
-            createdBy: true,
-            sections: {
-                include: {
-                    lessons: {
-                        orderBy: {
-                            orderIndex: 'asc'
-                        }
-                    }
-                },
-                orderBy: {
-                    orderIndex: 'asc'
-                }
-            },
-            cohorts: {
-                include: {
-                    _count: {
-                        select: { enrollments: true }
-                    }
-                }
-            }
+export default function AdminCourseDetailPage() {
+  const params = useParams()
+  const slug = params.slug as string
+  const [course, setCourse] = useState<Course | null>(null)
+  const [sections, setSections] = useState<Section[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const supabase = createClientSupabaseClient()
+
+  useEffect(() => {
+    async function fetchCourse() {
+      try {
+        // Check authentication
+        const { data: { user } } = await supabase.auth.getUser()
+        if (!user) {
+          setError('Authentication required')
+          return
         }
-    })
 
-    if (!course) {
-        notFound()
+        // Check user role
+        const { data: userData } = await supabase
+          .from('users')
+          .select('role')
+          .eq('id', user.id)
+          .single()
+
+        if (!userData || (userData.role !== 'ADMIN' && userData.role !== 'INSTRUCTOR')) {
+          setError('Access denied. Admin or instructor privileges required.')
+          return
+        }
+
+        // Fetch course details
+        const { data: courseData, error: courseError } = await supabase
+          .from('courses')
+          .select('*')
+          .eq('slug', slug)
+          .single()
+
+        if (courseError) throw courseError
+        setCourse(courseData)
+
+        // Fetch sections with lessons
+        const { data: sectionsData, error: sectionsError } = await supabase
+          .from('sections')
+          .select(`
+            *,
+            lessons (*)
+          `)
+          .eq('courseId', courseData.id)
+          .order('orderIndex', { ascending: true })
+
+        if (sectionsError) throw sectionsError
+
+        // Sort lessons within each section
+        const sortedSections = sectionsData.map(section => ({
+          ...section,
+          lessons: section.lessons.sort((a: any, b: any) => a.orderIndex - b.orderIndex)
+        }))
+
+        setSections(sortedSections)
+      } catch (err) {
+        console.error('Error fetching course:', err)
+        setError('Failed to load course')
+      } finally {
+        setLoading(false)
+      }
     }
 
-    // Check if user has permission to edit this course
-    if (user.role !== 'ADMIN' && course.createdById !== user.id) {
-        return (
-            <div className="container mx-auto px-4 py-8">
-                <h1 className="text-2xl font-semibold">Access denied</h1>
-                <p className="text-muted-foreground">You don't have permission to edit this course.</p>
-            </div>
-        )
+    if (slug) {
+      fetchCourse()
     }
+  }, [slug, supabase])
 
+  if (loading) {
     return (
-        <div className="min-h-screen bg-background text-foreground">
-            <div className="container mx-auto px-4 py-8">
-                <div className="flex items-center justify-between mb-6">
-                    <h1 className="text-3xl font-bold">{course.title}</h1>
-                    <div className="space-x-2">
-                        <Link
-                            href={`/admin/courses/${course.slug}/edit`}
-                            className="rounded bg-primary px-4 py-2 text-white hover:bg-primary/90 transition-colors"
-                        >
-                            Edit Course
-                        </Link>
-                        <Link
-                            href={`/courses/${course.slug}`}
-                            className="rounded bg-secondary px-4 py-2 text-secondary-foreground hover:bg-secondary/90 transition-colors"
-                        >
-                            View Live
-                        </Link>
-                    </div>
-                </div>
-
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-                    <div className="lg:col-span-2">
-                        <div className="p-6 border rounded-lg bg-card">
-                            <h2 className="text-xl font-semibold mb-4">Course Details</h2>
-                            <div className="space-y-3">
-                                <div>
-                                    <h3 className="font-medium">Description</h3>
-                                    <p className="text-muted-foreground">{course.description || 'No description provided'}</p>
-                                </div>
-                                <div>
-                                    <h3 className="font-medium">Slug</h3>
-                                    <p className="text-muted-foreground">{course.slug}</p>
-                                </div>
-                                <div>
-                                    <h3 className="font-medium">Created by</h3>
-                                    <p className="text-muted-foreground">{course.createdBy.name || course.createdBy.email}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div>
-                        <div className="p-6 border rounded-lg bg-card">
-                            <h2 className="text-xl font-semibold mb-4">Statistics</h2>
-                            <div className="space-y-3">
-                                <div className="flex justify-between">
-                                    <span>Sections</span>
-                                    <span className="font-medium">{course.sections.length}</span>
-                                </div>
-                                <div className="flex justify-between">
-                                    <span>Total Lessons</span>
-                                    <span className="font-medium">
-                                        {course.sections.reduce((acc, section) => acc + section.lessons.length, 0)}
-                                    </span>
-                                </div>
-                                <div className="flex justify-between">
-                                    <span>Cohorts</span>
-                                    <span className="font-medium">{course.cohorts.length}</span>
-                                </div>
-                                <div className="flex justify-between">
-                                    <span>Total Enrollments</span>
-                                    <span className="font-medium">
-                                        {course.cohorts.reduce((acc, cohort) => acc + cohort._count.enrollments, 0)}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Sections and Lessons */}
-                <div className="mb-8">
-                    <div className="flex items-center justify-between mb-4">
-                        <h2 className="text-2xl font-semibold">Course Content</h2>
-                        <Link
-                            href={`/admin/courses/${course.slug}/sections/new`}
-                            className="rounded bg-primary px-4 py-2 text-white hover:bg-primary/90 transition-colors"
-                        >
-                            Add Section
-                        </Link>
-                    </div>
-
-                    {course.sections.length === 0 ? (
-                        <div className="p-8 text-center border rounded-lg">
-                            <p className="text-muted-foreground mb-4">No sections created yet.</p>
-                            <Link
-                                href={`/admin/courses/${course.slug}/sections/new`}
-                                className="rounded bg-primary px-4 py-2 text-white"
-                            >
-                                Create your first section
-                            </Link>
-                        </div>
-                    ) : (
-                        <div className="space-y-4">
-                            {course.sections.map((section) => (
-                                <div key={section.id} className="border rounded-lg bg-card">
-                                    <div className="p-4 border-b flex items-center justify-between">
-                                        <h3 className="font-semibold">{section.title}</h3>
-                                        <div className="space-x-2">
-                                            <Link
-                                                href={`/admin/courses/${course.slug}/sections/${section.id}/edit`}
-                                                className="text-sm text-primary hover:underline"
-                                            >
-                                                Edit
-                                            </Link>
-                                            <Link
-                                                href={`/admin/courses/${course.slug}/sections/${section.id}/lessons/new`}
-                                                className="text-sm text-primary hover:underline"
-                                            >
-                                                Add Lesson
-                                            </Link>
-                                        </div>
-                                    </div>
-
-                                    {section.lessons.length === 0 ? (
-                                        <div className="p-4 text-muted-foreground">
-                                            No lessons in this section yet.
-                                        </div>
-                                    ) : (
-                                        <ul className="divide-y">
-                                            {section.lessons.map((lesson) => (
-                                                <li key={lesson.id} className="p-4 flex items-center justify-between">
-                                                    <div>
-                                                        <div className="font-medium">{lesson.title}</div>
-                                                        <div className="text-sm text-muted-foreground">
-                                                            {lesson.description || 'No description'}
-                                                        </div>
-                                                    </div>
-                                                    <div className="space-x-2">
-                                                        <Link
-                                                            href={`/admin/courses/${course.slug}/lessons/${lesson.id}/edit`}
-                                                            className="text-sm text-primary hover:underline"
-                                                        >
-                                                            Edit
-                                                        </Link>
-                                                        {lesson.videoUrl && (
-                                                            <a
-                                                                href={lesson.videoUrl}
-                                                                target="_blank"
-                                                                rel="noopener noreferrer"
-                                                                className="text-sm text-primary hover:underline"
-                                                            >
-                                                                Watch
-                                                            </a>
-                                                        )}
-                                                    </div>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    )}
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                </div>
-
-                {/* Cohorts */}
-                <div>
-                    <div className="flex items-center justify-between mb-4">
-                        <h2 className="text-2xl font-semibold">Cohorts</h2>
-                        <Link
-                            href={`/admin/courses/${course.slug}/cohorts/new`}
-                            className="rounded bg-primary px-4 py-2 text-white hover:bg-primary/90 transition-colors"
-                        >
-                            Create Cohort
-                        </Link>
-                    </div>
-
-                    {course.cohorts.length === 0 ? (
-                        <div className="p-8 text-center border rounded-lg">
-                            <p className="text-muted-foreground mb-4">No cohorts created yet.</p>
-                            <Link
-                                href={`/admin/courses/${course.slug}/cohorts/new`}
-                                className="rounded bg-primary px-4 py-2 text-white"
-                            >
-                                Create your first cohort
-                            </Link>
-                        </div>
-                    ) : (
-                        <div className="border rounded-lg overflow-hidden">
-                            <table className="min-w-full divide-y divide-border">
-                                <thead className="bg-muted">
-                                    <tr>
-                                        <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Name</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Dates</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Enrollments</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Status</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-border">
-                                    {course.cohorts.map((cohort) => (
-                                        <tr key={cohort.id}>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                <div className="text-sm font-medium">{cohort.name}</div>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                <div className="text-sm">
-                                                    {cohort.startDate ? new Date(cohort.startDate).toLocaleDateString() : 'N/A'} -
-                                                    {cohort.endDate ? new Date(cohort.endDate).toLocaleDateString() : 'N/A'}
-                                                </div>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm">
-                                                {cohort._count.enrollments} students
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                                                    {cohort.status}
-                                                </span>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm">
-                                                <Link
-                                                    href={`/admin/courses/${course.slug}/cohorts/${cohort.id}/edit`}
-                                                    className="text-primary hover:underline"
-                                                >
-                                                    Edit
-                                                </Link>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    )}
-                </div>
-            </div>
-        </div>
+      <div className="flex items-center justify-center py-8">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
     )
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-8">
+        <p className="text-red-600">{error}</p>
+        <Button onClick={() => window.history.back()} className="mt-4">
+          Go Back
+        </Button>
+      </div>
+    )
+  }
+
+  if (!course) {
+    return (
+      <div className="text-center py-8">
+        <p className="text-red-600">Course not found</p>
+        <Button onClick={() => window.history.back()} className="mt-4">
+          Go Back
+        </Button>
+      </div>
+    )
+  }
+
+  const totalLessons = sections.reduce((total, section) => total + section.lessons.length, 0)
+  const freeLessons = sections.reduce((total, section) => 
+    total + section.lessons.filter(lesson => lesson.isFree).length, 0
+  )
+
+  return (
+    <div className="space-y-6">
+      {/* Course Header */}
+      <div className="flex justify-between items-start">
+        <div className="flex-1">
+          <div className="flex items-center gap-3 mb-2">
+            <h1 className="text-3xl font-bold">{course.title}</h1>
+            <div className="flex gap-2">
+              {course.published ? (
+                <Badge variant="default">Published</Badge>
+              ) : (
+                <Badge variant="secondary">Draft</Badge>
+              )}
+              {course.featured && <Badge variant="destructive">Featured</Badge>}
+            </div>
+          </div>
+          <p className="text-muted-foreground text-lg mb-4">{course.description}</p>
+          
+          <div className="flex items-center gap-6 text-sm text-muted-foreground">
+            <div className="flex items-center gap-1">
+              <BookOpen className="h-4 w-4" />
+              <span>{course.level}</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <Clock className="h-4 w-4" />
+              <span>{course.estimatedHours}h estimated</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <Users className="h-4 w-4" />
+              <span>{totalLessons} lessons ({freeLessons} free)</span>
+            </div>
+            {course.youtubePlaylist && (
+              <div className="flex items-center gap-1">
+                <Youtube className="h-4 w-4 text-red-500" />
+                <a 
+                  href={course.youtubePlaylist} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="hover:underline"
+                >
+                  YouTube Playlist
+                </a>
+              </div>
+            )}
+          </div>
+        </div>
+        
+        <div className="flex gap-2">
+          <Button onClick={() => window.location.href = `/admin/courses/${course.slug}/edit`}>
+            <Edit className="h-4 w-4 mr-2" />
+            Edit Course
+          </Button>
+          <Button variant="outline" onClick={() => window.location.href = `/courses/${course.slug}`}>
+            View Live
+          </Button>
+        </div>
+      </div>
+
+      <Tabs defaultValue="content" className="w-full">
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="content">Course Content</TabsTrigger>
+          <TabsTrigger value="details">Details</TabsTrigger>
+          <TabsTrigger value="cohorts">Cohorts</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="content" className="space-y-4">
+          <div className="flex justify-between items-center">
+            <h2 className="text-2xl font-semibold">Course Content</h2>
+            <Button onClick={() => window.location.href = `/admin/courses/${course.slug}/sections/new`}>
+              <Plus className="h-4 w-4 mr-2" />
+              Add Section
+            </Button>
+          </div>
+
+          {sections.length > 0 ? (
+            sections.map((section, sectionIndex) => (
+              <Card key={section.id}>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <span className="bg-primary text-primary-foreground rounded-full w-6 h-6 flex items-center justify-center text-sm">
+                      {sectionIndex + 1}
+                    </span>
+                    {section.title}
+                  </CardTitle>
+                  <CardDescription>
+                    {section.lessons.length} lesson{section.lessons.length !== 1 ? 's' : ''}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {section.lessons.map((lesson, lessonIndex) => (
+                    <Card key={lesson.id} className="border-l-4 border-l-blue-500">
+                      <CardHeader>
+                        <div className="flex items-center justify-between">
+                          <CardTitle className="text-lg flex items-center gap-2">
+                            <span className="text-sm text-muted-foreground">
+                              {sectionIndex + 1}.{lessonIndex + 1}
+                            </span>
+                            {lesson.title}
+                          </CardTitle>
+                          <div className="flex gap-2">
+                            {lesson.isFree && <Badge variant="secondary">Free</Badge>}
+                            {lesson.videoId && (
+                              <Badge variant="outline" className="text-blue-600">
+                                <Youtube className="h-3 w-3 mr-1" />
+                                {lesson.videoProvider}
+                              </Badge>
+                            )}
+                          </div>
+                        </div>
+                        {lesson.description && (
+                          <CardDescription>{lesson.description}</CardDescription>
+                        )}
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        {lesson.videoId && (
+                          <VideoPlayer
+                            provider={lesson.videoProvider as any}
+                            videoId={lesson.videoId}
+                            embedUrl={lesson.embedUrl}
+                            thumbnailUrl={lesson.thumbnail}
+                            title={lesson.title}
+                            showTitle={false}
+                          />
+                        )}
+                        {lesson.content && (
+                          <MarkdownRenderer content={lesson.content} />
+                        )}
+                        <div className="flex gap-2">
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            onClick={() => window.location.href = `/admin/courses/${course.slug}/lessons/${lesson.id}/edit`}
+                          >
+                            Edit Lesson
+                          </Button>
+                          {lesson.videoUrl && (
+                            <Button 
+                              variant="outline" 
+                              size="sm"
+                              onClick={() => window.open(lesson.videoUrl, '_blank')}
+                            >
+                              Watch Original
+                            </Button>
+                          )}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                  
+                  <Button 
+                    variant="outline" 
+                    className="w-full"
+                    onClick={() => window.location.href = `/admin/courses/${course.slug}/sections/${section.id}/lessons/new`}
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Lesson to {section.title}
+                  </Button>
+                </CardContent>
+              </Card>
+            ))
+          ) : (
+            <Card>
+              <CardContent className="text-center py-8">
+                <p className="text-muted-foreground">No content added yet</p>
+                <Button 
+                  className="mt-4"
+                  onClick={() => window.location.href = `/admin/courses/${course.slug}/sections/new`}
+                >
+                  Create Your First Section
+                </Button>
+              </CardContent>
+            </Card>
+          )}
+        </TabsContent>
+
+        <TabsContent value="details" className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Prerequisites</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {course.prerequisites ? (
+                  <MarkdownRenderer content={course.prerequisites} />
+                ) : (
+                  <p className="text-muted-foreground">No prerequisites specified</p>
+                )}
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Learning Goals</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {course.learningGoals ? (
+                  <MarkdownRenderer content={course.learningGoals} />
+                ) : (
+                  <p className="text-muted-foreground">No learning goals specified</p>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Course Statistics</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="text-center">
+                  <div className="text-2xl font-bold">{sections.length}</div>
+                  <div className="text-sm text-muted-foreground">Sections</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold">{totalLessons}</div>
+                  <div className="text-sm text-muted-foreground">Total Lessons</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold">{freeLessons}</div>
+                  <div className="text-sm text-muted-foreground">Free Lessons</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold">{course.estimatedHours}h</div>
+                  <div className="text-sm text-muted-foreground">Estimated Time</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="cohorts" className="space-y-4">
+          <div className="flex justify-between items-center">
+            <h2 className="text-2xl font-semibold">Cohorts</h2>
+            <Button onClick={() => window.location.href = `/admin/courses/${course.slug}/cohorts/new`}>
+              <Plus className="h-4 w-4 mr-2" />
+              Create Cohort
+            </Button>
+          </div>
+
+          <Card>
+            <CardContent className="text-center py-8">
+              <p className="text-muted-foreground">Cohort management coming soon</p>
+              <p className="text-sm text-muted-foreground mt-2">
+                This will show all cohorts for this course with enrollment management
+              </p>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+    </div>
+  )
 }

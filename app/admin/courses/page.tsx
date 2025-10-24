@@ -65,7 +65,9 @@ export default function AdminCoursesPage() {
           <h1 className="text-3xl font-bold">Courses</h1>
           <p className="text-muted-foreground">Manage platform courses</p>
         </div>
-        <Button>Create Course</Button>
+        <Button onClick={() => window.location.href = '/admin/courses/create'}>
+          Create Course
+        </Button>
       </div>
 
       <div className="grid gap-4">
@@ -98,8 +100,20 @@ export default function AdminCoursesPage() {
                     Created: {new Date(course.createdAt).toLocaleDateString()}
                   </div>
                   <div className="flex space-x-2">
-                    <Button variant="outline" size="sm">Edit</Button>
-                    <Button variant="outline" size="sm">View</Button>
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => window.location.href = `/admin/courses/${course.slug}/edit`}
+                    >
+                      Edit
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => window.location.href = `/admin/courses/${course.slug}`}
+                    >
+                      View
+                    </Button>
                   </div>
                 </div>
               </CardContent>
