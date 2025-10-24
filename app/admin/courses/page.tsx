@@ -5,11 +5,16 @@ import { createClientSupabaseClient } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog'
+import { Eye, Edit, Trash2 } from 'lucide-react'
+import { toast } from 'sonner'
 
 export default function AdminCoursesPage() {
   const [courses, setCourses] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [deletingCourse, setDeletingCourse] = useState<string | null>(null)
   const supabase = createClientSupabaseClient()
   const router = useRouter()
 
@@ -38,6 +43,34 @@ export default function AdminCoursesPage() {
 
     fetchCourses()
   }, [supabase])
+
+  const handleDeleteCourse = async (courseId: string, courseTitle: string) => {
+    setDeletingCourse(courseId)
+    try {
+      const response = await fetch(`/api/admin/courses/${courseId}`, {
+        method: 'DELETE',
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Failed to delete course')
+      }
+
+      toast.success(`Course "${courseTitle}" deleted successfully`)
+      // Remove the course from the local state
+      setCourses(courses.filter(course => course.id !== courseId))
+    } catch (err) {
+      console.error('Unexpected error:', err)
+      toast.error(err instanceof Error ? err.message : 'An unexpected error occurred')
+    } finally {
+      setDeletingCourse(null)
+    }
+  }
+
+  const handlePreviewCourse = (courseSlug: string) => {
+    // Open course preview in a new tab with admin preview mode
+    window.open(`/courses/${courseSlug}?preview=admin`, '_blank')
+  }
 
   if (loading) {
     return (
@@ -80,16 +113,18 @@ export default function AdminCoursesPage() {
                     <CardTitle>{course.title}</CardTitle>
                     <CardDescription>{course.description}</CardDescription>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 flex-wrap">
+                    <Badge variant={course.published ? "default" : "secondary"}>
+                      {course.published ? "Published" : "Draft"}
+                    </Badge>
+                    {course.featured && (
+                      <Badge variant="outline">Featured</Badge>
+                    )}
                     {course.level && (
-                      <span className="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded">
-                        {course.level}
-                      </span>
+                      <Badge variant="outline">{course.level}</Badge>
                     )}
                     {course.category && (
-                      <span className="px-2 py-1 text-xs bg-green-100 text-green-800 rounded">
-                        {course.category}
-                      </span>
+                      <Badge variant="outline">{course.category}</Badge>
                     )}
                   </div>
                 </div>
@@ -103,17 +138,48 @@ export default function AdminCoursesPage() {
                     <Button 
                       variant="outline" 
                       size="sm"
-                      onClick={() => window.location.href = `/admin/courses/${course.slug}/edit`}
+                      onClick={() => handlePreviewCourse(course.slug)}
                     >
-                      Edit
+                      <Eye className="h-4 w-4 mr-1" />
+                      Preview
                     </Button>
                     <Button 
                       variant="outline" 
                       size="sm"
-                      onClick={() => window.location.href = `/admin/courses/${course.slug}`}
+                      onClick={() => window.location.href = `/admin/courses/${course.slug}/edit`}
                     >
-                      View
+                      <Edit className="h-4 w-4 mr-1" />
+                      Edit
                     </Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          disabled={deletingCourse === course.id}
+                        >
+                          <Trash2 className="h-4 w-4 mr-1" />
+                          Delete
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Delete Course</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            Are you sure you want to delete "{course.title}"? This action cannot be undone and will also delete all associated cohorts, enrollments, and progress data.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={() => handleDeleteCourse(course.id, course.title)}
+                            className="bg-red-600 hover:bg-red-700"
+                          >
+                            Delete Course
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   </div>
                 </div>
               </CardContent>

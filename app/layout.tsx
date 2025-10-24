@@ -4,6 +4,7 @@ import './globals.css'
 import Providers from './providers'
 import ConditionalLayout from '@/components/conditional-layout'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
+import { Toaster } from 'sonner'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -31,6 +32,7 @@ export default async function RootLayout({
           <ConditionalLayout session={session}>
             {children}
           </ConditionalLayout>
+          <Toaster />
         </Providers>
       </body>
     </html>

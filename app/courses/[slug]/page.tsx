@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useParams } from 'next/navigation'
+import { useParams, useSearchParams } from 'next/navigation'
 import { createClientSupabaseClient } from '@/lib/supabase'
 import Link from 'next/link'
 import VideoPlayer from '@/components/video-player'
@@ -49,7 +49,9 @@ interface Lesson {
 
 export default function CourseDetailPage() {
   const params = useParams()
+  const searchParams = useSearchParams()
   const slug = params.slug as string
+  const isAdminPreview = searchParams.get('preview') === 'admin'
   const [course, setCourse] = useState<Course | null>(null)
   const [sections, setSections] = useState<Section[]>([])
   const [currentLesson, setCurrentLesson] = useState<Lesson | null>(null)
@@ -57,18 +59,45 @@ export default function CourseDetailPage() {
   const [enrolled, setEnrolled] = useState(false)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [isAdmin, setIsAdmin] = useState(false)
   const supabase = createClientSupabaseClient()
 
   useEffect(() => {
     async function fetchCourse() {
       try {
-        // Fetch course details
-        const { data: courseData, error: courseError } = await supabase
+        // Check if user is admin for preview mode
+        const { data: { user } } = await supabase.auth.getUser()
+        let userIsAdmin = false
+        
+        if (user && isAdminPreview) {
+          try {
+            // Check if user has admin role (you might need to adjust this based on your user role system)
+            const { data: userData } = await supabase
+              .from('users')
+              .select('role')
+              .eq('id', user.id)
+              .single()
+            
+            userIsAdmin = userData?.role === 'ADMIN'
+          } catch (error) {
+            // Fallback: assume admin if users table doesn't exist and user is authenticated
+            console.warn('Could not check user role, assuming admin for preview:', error)
+            userIsAdmin = true
+          }
+          setIsAdmin(userIsAdmin)
+        }
+
+        // Fetch course details - allow unpublished if admin preview
+        const courseQuery = supabase
           .from('courses')
           .select('*')
           .eq('slug', slug)
-          .eq('published', true)
-          .single()
+
+        if (!isAdminPreview || !userIsAdmin) {
+          courseQuery.eq('published', true)
+        }
+
+        const { data: courseData, error: courseError } = await courseQuery.single()
 
         if (courseError) throw courseError
         setCourse(courseData)
@@ -85,11 +114,11 @@ export default function CourseDetailPage() {
 
         if (sectionsError) throw sectionsError
 
-        // Sort lessons within each section and filter published
+        // Sort lessons within each section and filter published (unless admin preview)
         const sortedSections = sectionsData.map(section => ({
           ...section,
           lessons: section.lessons
-            .filter((lesson: any) => lesson.published)
+            .filter((lesson: any) => lesson.published || (isAdminPreview && userIsAdmin))
             .sort((a: any, b: any) => a.orderIndex - b.orderIndex)
         }))
 
@@ -104,8 +133,7 @@ export default function CourseDetailPage() {
           setCurrentLesson(firstFreeLesson)
         }
 
-        // Check authentication and enrollment
-        const { data: { user } } = await supabase.auth.getUser()
+        // Set user (already fetched above)
         setUser(user)
 
         if (user) {
@@ -133,7 +161,7 @@ export default function CourseDetailPage() {
   }, [slug, supabase])
 
   const canAccessLesson = (lesson: Lesson) => {
-    return lesson.isFree || enrolled
+    return lesson.isFree || enrolled || (isAdminPreview && isAdmin)
   }
 
   const totalLessons = sections.reduce((total, section) => total + section.lessons.length, 0)
@@ -165,12 +193,40 @@ export default function CourseDetailPage() {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Admin Preview Banner */}
+      {isAdminPreview && isAdmin && (
+        <div className="bg-orange-100 border-b border-orange-200 px-4 py-2">
+          <div className="container mx-auto">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Badge variant="outline" className="bg-orange-200 text-orange-800">
+                  Admin Preview
+                </Badge>
+                <span className="text-sm text-orange-700">
+                  You are viewing this {course?.published ? 'published' : 'draft'} course as an administrator
+                </span>
+              </div>
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => window.close()}
+              >
+                Close Preview
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+      
       <div className="container mx-auto px-4 py-8">
         {/* Course Header */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-4">
             <h1 className="text-4xl font-bold">{course.title}</h1>
             <div className="flex gap-2">
+              {isAdminPreview && isAdmin && !course.published && (
+                <Badge variant="destructive">Draft</Badge>
+              )}
               <Badge variant="outline">{course.level}</Badge>
               <Badge variant="secondary">{course.category}</Badge>
             </div>
@@ -290,6 +346,9 @@ export default function CourseDetailPage() {
                           </div>
                           <div className="flex items-center gap-2">
                             {lesson.isFree && <Badge variant="secondary" className="text-xs">Free</Badge>}
+                            {isAdminPreview && isAdmin && !lesson.published && (
+                              <Badge variant="destructive" className="text-xs">Draft</Badge>
+                            )}
                             <Badge variant="outline" className="text-xs">{lesson.videoProvider}</Badge>
                           </div>
                         </div>

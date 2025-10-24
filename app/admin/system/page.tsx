@@ -1,11 +1,31 @@
-import { getCurrentUser } from '@/lib/auth-sync'
+'use client'
 
-export const dynamic = 'force-dynamic'
+import { useEffect, useState } from 'react'
+import { createClientSupabaseClient } from '@/lib/supabase'
 
-export default async function AdminSystemPage() {
-  const user = await getCurrentUser()
+export default function AdminSystemPage() {
+  const [user, setUser] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
+  const supabase = createClientSupabaseClient()
 
-  if (!user || user.role !== 'ADMIN') {
+  useEffect(() => {
+    async function getUser() {
+      const { data: { user } } = await supabase.auth.getUser()
+      setUser(user)
+      setLoading(false)
+    }
+    getUser()
+  }, [supabase])
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-8">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    )
+  }
+
+  if (!user) {
     return (
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-2xl font-semibold">Access denied</h1>

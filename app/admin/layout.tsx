@@ -75,51 +75,81 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
 
     return (
         <div className="min-h-screen bg-background text-foreground">
-            <header className="border-b">
-                <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-                    <div className="flex items-center space-x-4">
-                        <div className="w-8 h-8 bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--accent-2))] rounded-lg flex items-center justify-center">
-                            <span className="text-primary-foreground font-bold text-sm">N</span>
-                        </div>
-                        <h1 className="text-xl font-bold text-foreground">NextGen-CTO</h1>
-                        <div className="text-sm text-muted-foreground">Admin Panel</div>
-                    </div>
-                    <div className="flex items-center space-x-4">
-                        <span className="text-sm">
-                            {user?.name || user?.email}
-                        </span>
-                        <button
-                            onClick={async () => {
-                                const supabase = createClientSupabaseClient()
-                                await supabase.auth.signOut()
-                                router.push('/admin/signin')
-                            }}
-                            className="text-sm text-muted-foreground hover:text-foreground"
-                        >
-                            Sign out
-                        </button>
-                    </div>
-                </div>
-            </header>
-
             <div className="container mx-auto px-4 py-6 grid grid-cols-1 md:grid-cols-5 gap-6">
-                <nav className="col-span-1 p-4 border rounded">
-                    <h2 className="font-semibold mb-4">Navigation</h2>
-                    <ul className="space-y-2">
-                        <li><Link href="/admin" className="hover:underline">Dashboard</Link></li>
-                        <li><Link href="/admin/courses" className="hover:underline">Courses</Link></li>
-                        <li><Link href="/admin/users" className="hover:underline">Users</Link></li>
-                        <li><Link href="/admin/settings" className="hover:underline">Settings</Link></li>
-                    </ul>
+                <nav className="col-span-1">
+                    <div className="sticky top-20 p-4 border rounded-lg bg-card">
+                        <h2 className="font-semibold mb-4 text-foreground">Navigation</h2>
+                        <ul className="space-y-2">
+                            <li>
+                                <Link 
+                                    href="/admin" 
+                                    className={`block px-3 py-2 rounded-md text-sm transition-colors ${
+                                        pathname === '/admin' 
+                                            ? 'bg-primary text-primary-foreground' 
+                                            : 'text-muted-foreground hover:text-foreground hover:bg-accent'
+                                    }`}
+                                >
+                                    Dashboard
+                                </Link>
+                            </li>
+                            <li>
+                                <Link 
+                                    href="/admin/courses" 
+                                    className={`block px-3 py-2 rounded-md text-sm transition-colors ${
+                                        pathname?.startsWith('/admin/courses') 
+                                            ? 'bg-primary text-primary-foreground' 
+                                            : 'text-muted-foreground hover:text-foreground hover:bg-accent'
+                                    }`}
+                                >
+                                    Courses
+                                </Link>
+                            </li>
+                            <li>
+                                <Link 
+                                    href="/admin/users" 
+                                    className={`block px-3 py-2 rounded-md text-sm transition-colors ${
+                                        pathname?.startsWith('/admin/users') 
+                                            ? 'bg-primary text-primary-foreground' 
+                                            : 'text-muted-foreground hover:text-foreground hover:bg-accent'
+                                    }`}
+                                >
+                                    Users
+                                </Link>
+                            </li>
+                            <li>
+                                <Link 
+                                    href="/admin/settings" 
+                                    className={`block px-3 py-2 rounded-md text-sm transition-colors ${
+                                        pathname?.startsWith('/admin/settings') 
+                                            ? 'bg-primary text-primary-foreground' 
+                                            : 'text-muted-foreground hover:text-foreground hover:bg-accent'
+                                    }`}
+                                >
+                                    Settings
+                                </Link>
+                            </li>
+                        </ul>
 
-                    {user?.role === 'ADMIN' && (
-                        <>
-                            <h2 className="font-semibold mt-6 mb-4">Admin</h2>
-                            <ul className="space-y-2">
-                                <li><Link href="/admin/system" className="hover:underline">System</Link></li>
-                            </ul>
-                        </>
-                    )}
+                        {user?.role === 'ADMIN' && (
+                            <>
+                                <h2 className="font-semibold mt-6 mb-4 text-foreground">Admin Only</h2>
+                                <ul className="space-y-2">
+                                    <li>
+                                        <Link 
+                                            href="/admin/system" 
+                                            className={`block px-3 py-2 rounded-md text-sm transition-colors ${
+                                                pathname === '/admin/system' 
+                                                    ? 'bg-primary text-primary-foreground' 
+                                                    : 'text-muted-foreground hover:text-foreground hover:bg-accent'
+                                            }`}
+                                        >
+                                            System
+                                        </Link>
+                                    </li>
+                                </ul>
+                            </>
+                        )}
+                    </div>
                 </nav>
                 <main className="col-span-1 md:col-span-4">{children}</main>
             </div>
